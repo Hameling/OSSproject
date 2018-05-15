@@ -1,2 +1,18 @@
-from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+from PIL import Image
+from pytesseract import *
+import os
+import cv2
+import numpy as np
+
+
+def OCR(imgfile, lang='eng'):
+    im = Image.open(imgfile)
+    text = image_to_string(im, lang=lang)
+
+    print("OCR Result")
+    print(text)
+
+os.chdir('C:\Program Files (x86)\Tesseract-OCR')
+
+
+OCR('result.png')
