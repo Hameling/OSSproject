@@ -179,7 +179,7 @@ def main(argv=None):
   """
   # 고양이 이미지에 대해 prediction
   image = (FLAGS.image_file if FLAGS.image_file else
-           os.path.join(FLAGS.model_dir, 'img.png'))
+           os.path.join(FLAGS.model_dir, 'cropped_panda.jpg'))
 
   # 인풋으로 입력되는 이미지에 대한 추론을 실행한다.
   run_inference_on_image(image)
