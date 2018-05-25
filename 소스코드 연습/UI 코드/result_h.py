@@ -1,0 +1,113 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'result_h.ui'
+#
+# Created by: PyQt5 UI code generator 5.6
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1347, 868)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.gridLayoutWidget_3 = QtWidgets.QWidget(self.centralwidget)
+        self.gridLayoutWidget_3.setGeometry(QtCore.QRect(10, 480, 711, 341))
+        self.gridLayoutWidget_3.setObjectName("gridLayoutWidget_3")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.gridLayoutWidget_3)
+        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.graphicsView_2 = QtWidgets.QGraphicsView(self.gridLayoutWidget_3)
+        self.graphicsView_2.setObjectName("graphicsView_2")
+        self.gridLayout_3.addWidget(self.graphicsView_2, 0, 1, 1, 1)
+        self.verticalScrollBar_2 = QtWidgets.QScrollBar(self.gridLayoutWidget_3)
+        self.verticalScrollBar_2.setOrientation(QtCore.Qt.Vertical)
+        self.verticalScrollBar_2.setObjectName("verticalScrollBar_2")
+        self.gridLayout_3.addWidget(self.verticalScrollBar_2, 0, 2, 1, 1)
+        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_3.setGeometry(QtCore.QRect(720, 70, 93, 61))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_4.setGeometry(QtCore.QRect(720, 130, 93, 61))
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(720, 10, 93, 61))
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 711, 461))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setObjectName("gridLayout")
+        self.graphicsView = QtWidgets.QGraphicsView(self.gridLayoutWidget)
+        self.graphicsView.setObjectName("graphicsView")
+        self.gridLayout.addWidget(self.graphicsView, 0, 0, 1, 1)
+        self.verticalScrollBar = QtWidgets.QScrollBar(self.gridLayoutWidget)
+        self.verticalScrollBar.setOrientation(QtCore.Qt.Vertical)
+        self.verticalScrollBar.setObjectName("verticalScrollBar")
+        self.gridLayout.addWidget(self.verticalScrollBar, 0, 1, 1, 1)
+        self.gridLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
+        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(830, 10, 351, 801))
+        self.gridLayoutWidget_2.setObjectName("gridLayoutWidget_2")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget_2)
+        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.textBrowser = QtWidgets.QTextBrowser(self.gridLayoutWidget_2)
+        self.textBrowser.setObjectName("textBrowser")
+        self.gridLayout_2.addWidget(self.textBrowser, 0, 0, 1, 1)
+        self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_5.setGeometry(QtCore.QRect(1180, 750, 93, 61))
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setGeometry(QtCore.QRect(1180, 10, 93, 61))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_9 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_9.setGeometry(QtCore.QRect(1180, 690, 93, 61))
+        self.pushButton_9.setObjectName("pushButton_9")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1347, 21))
+        self.menubar.setObjectName("menubar")
+        self.menuMeni = QtWidgets.QMenu(self.menubar)
+        self.menuMeni.setObjectName("menuMeni")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+        self.actionOpen = QtWidgets.QAction(MainWindow)
+        self.actionOpen.setObjectName("actionOpen")
+        self.actionExit = QtWidgets.QAction(MainWindow)
+        self.actionExit.setObjectName("actionExit")
+        self.menuMeni.addAction(self.actionOpen)
+        self.menuMeni.addAction(self.actionExit)
+        self.menubar.addAction(self.menuMeni.menuAction())
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.pushButton_3.setText(_translate("MainWindow", "Next"))
+        self.pushButton_4.setText(_translate("MainWindow", "Previous"))
+        self.pushButton.setText(_translate("MainWindow", "잘라낸 영역"))
+        self.pushButton_5.setText(_translate("MainWindow", "Exit"))
+        self.pushButton_2.setText(_translate("MainWindow", "Save"))
+        self.pushButton_9.setText(_translate("MainWindow", "Reset"))
+        self.menuMeni.setTitle(_translate("MainWindow", "Menu"))
+        self.actionOpen.setText(_translate("MainWindow", "Open"))
+        self.actionExit.setText(_translate("MainWindow", "Exit"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
+
