@@ -3,16 +3,26 @@ import numpy as np
 import random
 from matplotlib import pyplot as plt
 
-img = cv2.imread('img.png')
-##img = cv2.imread('image012.png',cv2.IMREAD_GRAYSCALE)
-imgray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+file_name = 'img2.jpg'
+
+if file_name.find('png') != -1 :
+    img = cv2.imread(file_name,cv2.IMREAD_COLOR)
+    imgray = cv2.imread(file_name,cv2.IMREAD_GRAYSCALE)
+elif file_name.find('jpg') != -1 :
+    img = cv2.imread(file_name)
+    imgray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+else: exit()
+
+#img = cv2.imread('image.png')
+###img = cv2.imread('image012.png',cv2.IMREAD_GRAYSCALE)
+#imgray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
 kernel = np.ones((2,2),np.uint8)
 mp = cv2.morphologyEx(imgray, cv2.MORPH_GRADIENT,kernel)
 
 ##ret,thresh = cv2.threshold(mp,125,255,0)
 thresh = cv2.adaptiveThreshold(mp,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
-            cv2.THRESH_BINARY,5,2)
+            cv2.THRESH_BINARY,7,2)
 thresh = ~thresh
 image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
@@ -21,9 +31,9 @@ for i in range(len(contours)):
     b = random.randrange(1,255)
     g = random.randrange(1,255)
     r = random.randrange(1,255)
-
-    cnt = contours[i]
-    img = cv2.drawContours(img, [cnt], -1,(b,g,r), 2)
+    if cv2.contourArea(contours[i]) > 300:
+        cnt = contours[i]
+        img = cv2.drawContours(img, [cnt], -1,(b,g,r), 2)
 
 
 cv2.imshow('thresh',thresh)
