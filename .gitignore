@@ -415,5 +415,5 @@ paket-files/
 
 # Additional Except File
 *.sln
-*.prproj
+*.pyproj
 # End of https://www.gitignore.io/api/opencv,python,visualstudio,visualstudiocode
