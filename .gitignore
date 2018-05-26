@@ -413,5 +413,7 @@ paket-files/
 # By default, sensitive information, such as encrypted password
 # should be stored in the .pubxml.user file.
 
-
+# Additional Except File
+*.sln
+*.pyproj
 # End of https://www.gitignore.io/api/opencv,python,visualstudio,visualstudiocode
