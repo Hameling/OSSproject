@@ -43,7 +43,7 @@ def BoxWarp(img, box):
     return warped
 
 
-file_name = 'practice/28754197_1788463781205822_2614637551339700224_n.jpg'
+file_name = 'practice/maxresdefault.jpg'
 
 if file_name.find('png') != -1 :
     img = cv2.imread(file_name,cv2.IMREAD_COLOR)
@@ -96,13 +96,13 @@ for i in range(len(contours)):
 
         contoured_img = 'Contour_img/' + file_name + str(i)
 
-        if flag == 1:
-            if os.path.isfile(contoured_img+'.png') == False:
-                cv2.imwrite(contoured_img+'.png',wp_img)
-        elif flag == 2:
-            if os.path.isfile(contoured_img+'.jpg') == False:
-                cv2.imwrite(contoured_img+'.jpg',wp_img)
-        else : exit()
+        #if flag == 1:
+        #    if os.path.isfile(contoured_img+'.png') == False:
+        #        cv2.imwrite(contoured_img+'.png',wp_img)
+        #elif flag == 2:
+        #    if os.path.isfile(contoured_img+'.jpg') == False:
+        #        cv2.imwrite(contoured_img+'.jpg',wp_img)
+        #else : exit()
 
 
 cv2.imshow('thresh',thresh)
