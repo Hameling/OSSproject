@@ -4,8 +4,6 @@ import random
 import os
 from matplotlib import pyplot as plt
 
-
-
 def BoxWarp(img, box):
 
     rect = np.zeros((4,2),dtype = 'float32')
@@ -43,7 +41,7 @@ def BoxWarp(img, box):
     return warped
 
 
-file_name = 'practice/maxresdefault.jpg'
+file_name = 'practice/28754197_1788463781205822_2614637551339700224_n.jpg'
 
 if file_name.find('png') != -1 :
     img = cv2.imread(file_name,cv2.IMREAD_COLOR)
@@ -58,15 +56,15 @@ else: exit()
 
 file_name = file_name.split('/')
 file_name = file_name[-1]
-print(file_name)
 
-#tmp_img = np.copy(img)
 
-#img = cv2.imread('image.png')
-###img = cv2.imread('image012.png',cv2.IMREAD_GRAYSCALE)
-#imgray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
 
 kernel = np.ones((2,2),np.uint8)
+sh_kernel = np.array([[-1,-1,-1], [-1,10,-1], [-1,-1,-1]])
+imgray = cv2.filter2D(imgray, -1, sh_kernel)
+
+
 mp = cv2.morphologyEx(imgray, cv2.MORPH_GRADIENT,kernel)
 tmp_img = np.copy(mp)
 mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,kernel)
@@ -76,6 +74,8 @@ thresh = cv2.adaptiveThreshold(mp,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
             cv2.THRESH_BINARY,7,2)
 thresh = ~thresh
 image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+
+
 
 for i in range(len(contours)):
     #각 Contour Line을 구분하기 위해서 Color Random생성
@@ -95,6 +95,8 @@ for i in range(len(contours)):
         #cv2.imshow("wp",wp_img)
 
         contoured_img = 'Contour_img/' + file_name + str(i)
+        #cv2.imwrite(contoured_img+'.jpg',wp_img)
+
 
         #if flag == 1:
         #    if os.path.isfile(contoured_img+'.png') == False:
