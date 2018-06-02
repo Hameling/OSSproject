@@ -41,7 +41,7 @@ def BoxWarp(img, box):
     return warped
 
 
-file_name = 'practice/28754197_1788463781205822_2614637551339700224_n.jpg'
+file_name = 'practice/5afcc4708978b451cd35f5ce30ce4abf.jpg'
 
 if file_name.find('png') != -1 :
     img = cv2.imread(file_name,cv2.IMREAD_COLOR)
@@ -53,23 +53,27 @@ elif file_name.find('jpg') != -1 :
     flag = 2
 else: exit()
 
-
 file_name = file_name.split('/')
 file_name = file_name[-1]
 
-
-
-
-kernel = np.ones((2,2),np.uint8)
+#Image Kernel 정의
+mp_kernel = np.ones((2,2),np.uint8)
 sh_kernel = np.array([[-1,-1,-1], [-1,10,-1], [-1,-1,-1]])
+br_kenrnel = np.array([[1/16, 1/8, 1/16],[1/8,1/4,1/8],[1/16, 1/8, 1/16]])
+
+
+cv2.imshow("gray_image",imgray)
+#imgray = cv2.equalizeHist(imgray)
+#cv2.imshow("His_image",imgray)
+
 imgray = cv2.filter2D(imgray, -1, sh_kernel)
+#imgray = cv2.filter2D(imgray,-1,br_kenrnel)
+cv2.imshow("Sharp_image",imgray)
 
-
-mp = cv2.morphologyEx(imgray, cv2.MORPH_GRADIENT,kernel)
+mp = cv2.morphologyEx(imgray, cv2.MORPH_GRADIENT,mp_kernel)
 tmp_img = np.copy(mp)
-mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,kernel)
+mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
 
-##ret,thresh = cv2.threshold(mp,125,255,0)
 thresh = cv2.adaptiveThreshold(mp,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
             cv2.THRESH_BINARY,7,2)
 thresh = ~thresh
@@ -92,19 +96,10 @@ for i in range(len(contours)):
         img = cv2.drawContours(img, [box], -1,(b,g,r), 2) 
 
         wp_img = BoxWarp(tmp_img,box)
-        #cv2.imshow("wp",wp_img)
-
+       
         contoured_img = 'Contour_img/' + file_name + str(i)
-        #cv2.imwrite(contoured_img+'.jpg',wp_img)
+        cv2.imwrite(contoured_img+'.jpg',wp_img)
 
-
-        #if flag == 1:
-        #    if os.path.isfile(contoured_img+'.png') == False:
-        #        cv2.imwrite(contoured_img+'.png',wp_img)
-        #elif flag == 2:
-        #    if os.path.isfile(contoured_img+'.jpg') == False:
-        #        cv2.imwrite(contoured_img+'.jpg',wp_img)
-        #else : exit()
 
 
 cv2.imshow('thresh',thresh)
