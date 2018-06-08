@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import random
 import os
-from matplotlib import pyplot as plt
 
 def BoxWarp(img, box):
 
@@ -41,7 +40,7 @@ def BoxWarp(img, box):
     return warped
 
 
-file_name = 'practice/home-video-message.png'
+file_name = 'practice/2018-05-21.png'
 
 if file_name.find('png') != -1 :
     img = cv2.imread(file_name,cv2.IMREAD_COLOR)
@@ -53,35 +52,53 @@ elif file_name.find('jpg') != -1 :
     flag = 2
 else: exit()
 
-file_name = file_name.split('/')
-file_name = file_name[-1]
-
-#Image Kernel 정의
+kernel= cv2.getStructuringElement(cv2.MORPH_RECT,(1,1))
 mp_kernel = np.ones((2,2),np.uint8)
 sh_kernel = np.array([[-1,-1,-1], [-1,10,-1], [-1,-1,-1]])
 br_kenrnel = np.array([[1/16, 1/8, 1/16],[1/8,1/4,1/8],[1/16, 1/8, 1/16]])
 
-
-cv2.imshow("gray_image",imgray)
-#imgray = cv2.equalizeHist(imgray)
-#cv2.imshow("His_image",imgray)
-
 imgray = cv2.filter2D(imgray, -1, sh_kernel)
-#imgray = cv2.filter2D(imgray,-1,br_kenrnel)
-cv2.imshow("Sharp_image",imgray)
+imgray = cv2.equalizeHist(imgray)
+cv2.imshow("gray_image",imgray)
 
-mp = cv2.morphologyEx(imgray, cv2.MORPH_GRADIENT,mp_kernel)
-tmp_img = np.copy(mp)
-mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
-
-thresh = cv2.adaptiveThreshold(mp,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
+thresh = cv2.adaptiveThreshold(imgray,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
             cv2.THRESH_BINARY,7,2)
+
+tmp_img = np.copy(thresh)
 thresh = ~thresh
 
 
+mp = cv2.morphologyEx(thresh, cv2.MORPH_GRADIENT,mp_kernel)
+#mp = cv2.morphologyEx(thresh, cv2.MORPH_OPEN,mp_kernel)
+mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
 
-image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+#mp = cv2.morphologyEx(mp, cv2.MORPH_GRADIENT,mp_kernel)
 
+#mp = cv2.morphologyEx(mp, cv2.MORPH_GRADIENT,mp_kernel)
+#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
+#mp = cv2.morphologyEx(mp, cv2.MORPH_GRADIENT,mp_kernel)
+
+#mp = cv2.morphologyEx(thresh, cv2.MORPH_OPEN,kernel)
+##mp = cv2.morphologyEx(mp, cv2.MORPH_OPEN,mp_kernel)
+#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
+#mp = cv2.morphologyEx(mp, cv2.MORPH_OPEN,mp_kernel)
+#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
+#mp = cv2.morphologyEx(mp, cv2.MORPH_OPEN,mp_kernel)
+#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
+
+cv2.imshow("mp",mp)
+
+image, contours, hierarchy = cv2.findContours(mp, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+
+#mp = cv2.morphologyEx(imgray, cv2.MORPH_GRADIENT,mp_kernel)
+#tmp_img = np.copy(mp)
+#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
+
+#thresh = cv2.adaptiveThreshold(mp,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
+#            cv2.THRESH_BINARY,7,2)
+#thresh = ~thresh
+
+#image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
 
 for i in range(len(contours)):
@@ -101,12 +118,12 @@ for i in range(len(contours)):
         wp_img = BoxWarp(tmp_img,box)
        
         contoured_img = 'Contour_img/' + file_name + str(i)
-        cv2.imwrite(contoured_img+'.jpg',wp_img)
+        #cv2.imwrite(contoured_img+'.jpg',wp_img)
 
 
 
 cv2.imshow('thresh',thresh)
-cv2.imshow('temp image',tmp_img)
+#cv2.imshow('temp image',tmp_img)
 cv2.imshow('image',img)
 k = cv2.waitKey(0)
 cv2.destroyAllWindows()
