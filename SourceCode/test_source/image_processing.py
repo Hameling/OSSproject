@@ -40,8 +40,11 @@ def BoxWarp(img, box):
     return warped
 
 
-file_name = 'practice/common.jpg'
-flag = 0
+file_root = 'practice/'
+file_set = '1402619141_183.jpg'
+
+file_name = file_root + file_set
+
 if file_name.find('png') != -1 :
     img = cv2.imread(file_name,cv2.IMREAD_COLOR)
     imgray = cv2.imread(file_name,cv2.IMREAD_GRAYSCALE)
@@ -109,7 +112,10 @@ for i in range(len(contours)):
 
         wp_img = BoxWarp(tmp_img,box)
        
-        contoured_img = 'Contour_img/' + file_name + str(i)
+        #os.chdir("C:/Users/user/Documents/OSSproject/SourceCode/Contour_img")
+        contoured_img = "Contour_img/" + file_set + str(i)
+        #contoured_img = file_name + str(i)
+        print(contoured_img)
         check = cv2.imwrite(contoured_img+'.jpg',wp_img)
         print(check)
 

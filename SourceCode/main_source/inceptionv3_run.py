@@ -2,6 +2,7 @@
 
 """Inception v3 architecture 모델을 retraining한 모델을 이용해서 이미지에 대한 추론(inference)을 진행하는 예제"""
 
+import os
 import numpy as np
 import cv2
 import tensorflow as tf
@@ -47,9 +48,11 @@ def run_inference_on_image(imagePath):
         for node_id in top_k:
             human_string = labels[node_id]
             score = predictions[node_id]
-            print('%s (score = %.5f)' % (human_string, score))
+            print('%s (score = %.5f)' % (human_string[2:10], score))
 
         answer = labels[top_k[0]]
+        answer = answer[2:10]
+
         return answer
 
 
@@ -60,8 +63,9 @@ if __name__ == '__main__':
     cv2.imshow("asd",og_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
+    print(os.getcwd())
     for i in range(len(contoured_img_root)):
-        if "positive" == run_inference_on_image(contoured_img_root[i]):
-            cv2.imwrite(resultSavePath + contoured_img_root[contoured_img_root.find("/") + 2]+'.jpg',contoured_img[i])
+        if "positive" == run_inference_on_image(contoured_img_root[i]+".jpg"):
+            #cv2.imwrite(resultSavePath + contoured_img_root[contoured_img_root.find("/") + 2]+'.jpg',contoured_img[i])
+            print("this is correct")
        

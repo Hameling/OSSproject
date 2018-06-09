@@ -87,8 +87,9 @@ def ImgProc(f_root, f_name):
     
             wp_img = BoxWarp(tmp_img,box)
             cimg_result.append(wp_img)
-            contoured_img = 'Contour_img/' + file_name + str(i)
-            cimg_root.append(file_name + str(i))
+            contoured_img = 'Contour_img/' + f_name + str(i)
+            cimg_root.append(contoured_img)
+            #print(contoured_img)
             cv2.imwrite(contoured_img+'.jpg',wp_img)
  
 
