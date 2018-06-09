@@ -3,12 +3,14 @@
 """Inception v3 architecture 모델을 retraining한 모델을 이용해서 이미지에 대한 추론(inference)을 진행하는 예제"""
 
 import numpy as np
+import cv2
 import tensorflow as tf
+from imgproc import ImgProc
 
-imagePath = '/tmp/556.jpg90.jpg'                                      # 추론을 진행할 이미지 경로
+#imagePath = '/tmp/556.jpg90.jpg'                                            # 추론을 진행할 이미지 경로
 modelFullPath = '/tmp/output_graph.pb'                                      # 읽어들일 graph 파일 경로
 labelsFullPath = '/tmp/output_labels.txt'                                   # 읽어들일 labels 파일 경로
-
+resultSavePath = 'Result/'
 
 def create_graph():
     """저장된(saved) GraphDef 파일로부터 graph를 생성하고 saver를 반환한다."""
@@ -19,7 +21,7 @@ def create_graph():
         _ = tf.import_graph_def(graph_def, name='')
 
 
-def run_inference_on_image():
+def run_inference_on_image(imagePath):
     answer = None
 
     if not tf.gfile.Exists(imagePath):
@@ -52,4 +54,14 @@ def run_inference_on_image():
 
 
 if __name__ == '__main__':
-    run_inference_on_image()
+    root = "practice"
+    name = "download.jpg"
+    og_img,img, contoured_img_root, contoured_img = ImgProc(root, name)
+    cv2.imshow("asd",og_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+    for i in range(len(contoured_img_root)):
+        if "positive" == run_inference_on_image(contoured_img_root[i]):
+            cv2.imwrite(resultSavePath + contoured_img_root[contoured_img_root.find("/") + 2]+'.jpg',contoured_img[i])
+       
