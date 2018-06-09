@@ -15,7 +15,7 @@ def BoxWarp(img, box):
     rect[1] = box[np.argmin(diff)]
     rect[3] = box[np.argmax(diff)]
 
-    print(rect)
+    #print(rect)
     (tl, tr, br, bl) = rect
     #(bl,tl,tr,br) = box
 
@@ -40,7 +40,7 @@ def BoxWarp(img, box):
     return warped
 
 
-file_name = 'practice/2018-05-21.png'
+file_name = 'practice/common.jpg'
 
 if file_name.find('png') != -1 :
     img = cv2.imread(file_name,cv2.IMREAD_COLOR)
@@ -52,13 +52,15 @@ elif file_name.find('jpg') != -1 :
     flag = 2
 else: exit()
 
-kernel= cv2.getStructuringElement(cv2.MORPH_RECT,(1,1))
-mp_kernel = np.ones((2,2),np.uint8)
-sh_kernel = np.array([[-1,-1,-1], [-1,10,-1], [-1,-1,-1]])
-br_kenrnel = np.array([[1/16, 1/8, 1/16],[1/8,1/4,1/8],[1/16, 1/8, 1/16]])
 
-imgray = cv2.filter2D(imgray, -1, sh_kernel)
-imgray = cv2.equalizeHist(imgray)
+height = np.size(img, 0)
+width = np.size(img, 1)
+
+print(height, width)
+
+mp_kernel = np.ones((2,2),np.uint8)
+
+
 cv2.imshow("gray_image",imgray)
 
 thresh = cv2.adaptiveThreshold(imgray,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
@@ -68,37 +70,25 @@ tmp_img = np.copy(thresh)
 thresh = ~thresh
 
 
-mp = cv2.morphologyEx(thresh, cv2.MORPH_GRADIENT,mp_kernel)
-#mp = cv2.morphologyEx(thresh, cv2.MORPH_OPEN,mp_kernel)
+mp = cv2.morphologyEx(thresh, cv2.MORPH_OPEN,mp_kernel)
 mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
-
-#mp = cv2.morphologyEx(mp, cv2.MORPH_GRADIENT,mp_kernel)
-
-#mp = cv2.morphologyEx(mp, cv2.MORPH_GRADIENT,mp_kernel)
-#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
-#mp = cv2.morphologyEx(mp, cv2.MORPH_GRADIENT,mp_kernel)
-
-#mp = cv2.morphologyEx(thresh, cv2.MORPH_OPEN,kernel)
-##mp = cv2.morphologyEx(mp, cv2.MORPH_OPEN,mp_kernel)
-#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
-#mp = cv2.morphologyEx(mp, cv2.MORPH_OPEN,mp_kernel)
-#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
-#mp = cv2.morphologyEx(mp, cv2.MORPH_OPEN,mp_kernel)
-#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
 
 cv2.imshow("mp",mp)
 
+
+minLineLength = 100
+maxLineGap = 5
+
+lines = cv2.HoughLinesP(mp,1,np.pi/360,100,minLineLength,maxLineGap)
+
+for i in range(len(lines)):
+    for x1,y1,x2,y2 in lines[i]:
+        #print(x1,y1,x2,y2)
+        if abs(y2-y1) > (height/20):
+            cv2.line(mp,(x1,y1),(x2,y2),(0,0,255),10)
+
+
 image, contours, hierarchy = cv2.findContours(mp, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-
-#mp = cv2.morphologyEx(imgray, cv2.MORPH_GRADIENT,mp_kernel)
-#tmp_img = np.copy(mp)
-#mp = cv2.morphologyEx(mp, cv2.MORPH_CLOSE,mp_kernel)
-
-#thresh = cv2.adaptiveThreshold(mp,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
-#            cv2.THRESH_BINARY,7,2)
-#thresh = ~thresh
-
-#image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
 
 for i in range(len(contours)):
@@ -106,13 +96,15 @@ for i in range(len(contours)):
     b = random.randrange(1,255)
     g = random.randrange(1,255)
     r = random.randrange(1,255)
-    if cv2.contourArea(contours[i]) > 500:
-        cnt = contours[i]
+
+    cnt = contours[i]
+    x, y, w, h = cv2.boundingRect(cnt)
+    if w > int(width/30) or h > int(height/30):
+    #if w > 10 or h > 10:
         rect = cv2.minAreaRect(cnt)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
-        print(box)
-        #img = cv2.drawContours(img, [cnt], -1,(b,g,r), 2) 
+        #print(box)
         img = cv2.drawContours(img, [box], -1,(b,g,r), 2) 
 
         wp_img = BoxWarp(tmp_img,box)
@@ -123,6 +115,7 @@ for i in range(len(contours)):
 
 
 cv2.imshow('thresh',thresh)
+cv2.imshow("mp2",mp)
 #cv2.imshow('temp image',tmp_img)
 cv2.imshow('image',img)
 k = cv2.waitKey(0)
