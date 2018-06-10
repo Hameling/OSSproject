@@ -7,6 +7,7 @@ import numpy as np
 import cv2
 import tensorflow as tf
 from imgproc import ImgProc
+from pytesseract import image_to_string
 
 #imagePath = '/tmp/556.jpg90.jpg'                                            # 추론을 진행할 이미지 경로
 modelFullPath = '/tmp/output_graph.pb'                                      # 읽어들일 graph 파일 경로
@@ -66,6 +67,8 @@ if __name__ == '__main__':
     print(os.getcwd())
     for i in range(len(contoured_img_root)):
         if "positive" == run_inference_on_image(contoured_img_root[i]+".jpg"):
-            #cv2.imwrite(resultSavePath + contoured_img_root[contoured_img_root.find("/") + 2]+'.jpg',contoured_img[i])
+            #print(resultSavePath + contoured_img_root[i][12:])
+            cv2.imwrite(resultSavePath + contoured_img_root[i][12:] +'.jpg',contoured_img[i])
+            #txt = image_to_string(contoured_img[i], lang = 'kor')
             print("this is correct")
        
