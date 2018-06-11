@@ -77,15 +77,21 @@ def ImgProc(f_root, f_name):
     
         cnt = contours[i]
         x, y, w, h = cv2.boundingRect(cnt)
-        if w > int(width/30) or h > int(height/30):
+
+        rect = cv2.minAreaRect(cnt)
+        box = cv2.boxPoints(rect)
+        box = np.int0(box)
+        wp_img,dst = BoxWarp(tmp_img,box)
+        if dst[1][0] > int(width/30) or dst[3][1] > int(height/30):
+        #if dst[1][0] > 30 and dst[3][1] > 10:
         #if w > 10 or h > 10:
-            rect = cv2.minAreaRect(cnt)
-            box = cv2.boxPoints(rect)
-            box = np.int0(box)
+            #rect = cv2.minAreaRect(cnt)
+            #box = cv2.boxPoints(rect)
+            #box = np.int0(box)
             #print(box)
             img = cv2.drawContours(img, [box], -1,(b,g,r), 2) 
-    
-            wp_img = BoxWarp(tmp_img,box)
+            #img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+            #wp_img = BoxWarp(tmp_img,box)
             cimg_result.append(wp_img)
             contoured_img = 'Contour_img/' + f_name + str(i)
             cimg_root.append(contoured_img)

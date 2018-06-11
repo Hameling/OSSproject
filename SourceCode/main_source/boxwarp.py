@@ -35,4 +35,4 @@ def BoxWarp(img, box):
     M = cv2.getPerspectiveTransform(rect, dst)
     warped = cv2.warpPerspective(img, M, (maxWidth, maxHeight))
 
-    return warped
+    return warped ,dst

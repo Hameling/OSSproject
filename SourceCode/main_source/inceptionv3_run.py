@@ -59,16 +59,15 @@ def run_inference_on_image(imagePath):
 
 if __name__ == '__main__':
     root = "practice"
-    name = "download.jpg"
+    name = "2018-05-21.png"
     og_img,img, contoured_img_root, contoured_img = ImgProc(root, name)
     cv2.imshow("asd",og_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     print(os.getcwd())
-    for i in range(len(contoured_img_root)):
-        if "positive" == run_inference_on_image(contoured_img_root[i]+".jpg"):
-            #print(resultSavePath + contoured_img_root[i][12:])
-            cv2.imwrite(resultSavePath + contoured_img_root[i][12:] +'.jpg',contoured_img[i])
-            #txt = image_to_string(contoured_img[i], lang = 'kor')
-            print("this is correct")
+    #for i in range(len(contoured_img_root)):
+    #    if "positive" == run_inference_on_image(contoured_img_root[i]+".jpg"):
+    #        cv2.imwrite(resultSavePath + contoured_img_root[i][12:] +'.jpg',contoured_img[i])
+    #        #txt = image_to_string(contoured_img[i], lang = 'kor')
+    #        print("this is correct")
        
