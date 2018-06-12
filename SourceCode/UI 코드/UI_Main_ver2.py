@@ -178,11 +178,37 @@ class Ui_MainWindow(object):
         #re_img = cv2.resize(re_img, None, fx = 0.9, fy = 0.9, interpolation=cv2.INTER_AREA)
         
         #최신 버전
-        og_img = cv2.resize(og_img, (int(width*0.9), int(height*0.9)),interpolation=cv2.INTER_AREA)
-        re_img = cv2.resize(re_img, (int(width*0.7), int(height*0.7)), interpolation=cv2.INTER_AREA)
+        #og_img = cv2.resize(og_img, (int(width*0.9), int(height*0.9)),interpolation=cv2.INTER_AREA)
+        #re_img = cv2.resize(re_img, (int(width*0.7), int(height*0.7)), interpolation=cv2.INTER_AREA)
 
+        #BGR->RGB 변환 
         b, g, r = cv2.split(og_img)
         og_img = cv2.merge([r,g,b])
+
+        b, g, r = cv2.split(re_img)
+        re_img = cv2.merge([r,g,b])
+        
+        og_height, og_width, channel = og_img.shape
+       
+        print(str(og_width)+", "+str(og_height))
+        
+
+        #결과 화면 이미지 크기 조절은 0.7을 수정해주면된다
+        if og_width > width or og_height > height:
+            print("길이가 넘습니다")
+            if (og_width - width) > (og_height - height):
+                ratio = width / og_width
+                og_img = cv2.resize(og_img, (int(width * 0.9), int(og_height * 0.9 * ratio )),interpolation=cv2.INTER_AREA)
+                re_img = cv2.resize(re_img, (int(width * 0.7), int(og_height * 0.7 * ratio )),interpolation=cv2.INTER_AREA)
+            else:
+                ratio = height / og_height
+                og_img = cv2.resize(og_img, (int(og_width * 0.9 * ratio), int(height * 0.9)),interpolation=cv2.INTER_AREA)
+                re_img = cv2.resize(re_img, (int(og_width * 0.7 * ratio), int(height * 0.7)),interpolation=cv2.INTER_AREA)
+        else:
+            og_img = cv2.resize(og_img, (int(og_width*0.9), int(og_height*0.9)),interpolation=cv2.INTER_AREA)
+            re_img = cv2.resize(re_img, (int(og_width*0.7), int(og_height*0.7)), interpolation=cv2.INTER_AREA)
+
+        
 
         #원본 이미지
         og_height, og_width, channel = og_img.shape
@@ -191,7 +217,8 @@ class Ui_MainWindow(object):
         #출력할 이미지
         re_height, re_width, channel = re_img.shape
         qimg = QtGui.QImage(re_img.data, re_width, re_height, re_width*3, QtGui.QImage.Format_RGB888 )
-        #im.show()#확인용 열기.
+       
+
         self.label.setPixmap(QtGui.QPixmap(og_qimg))
         
 
