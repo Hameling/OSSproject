@@ -9,12 +9,13 @@
 import sys
 import os
 import string
+import cv2
 from tkinter import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from PIL import Image, ImageTk
-#import result_s
+import imgproc
+import numpy as np
 
 class Ui_MainWindow(object):
 
@@ -168,16 +169,42 @@ class Ui_MainWindow(object):
         print(file_path_str[1:path_adress])
         #sel_img1= sel_img.replace('\\','\\\\')#경로에 \ 하나가 더 추가되야 되서 저렇게 씀.
         print(sel_img,"\n\n\n")#경로 재확인
-        im = Image.open(sel_img)#이미지 받음
-        rgb_im = im.convert('RGB')#png파일 >>jpg파일
-        rgb_im1= rgb_im
-        rgb_im=rgb_im.resize((width-100,height-100))
-        rgb_im.save('show.jpg')#배경 이미지 하나 넣을 것.
+        #im = Image.open(sel_img)#이미지 받음
+        
+        og_img, re_img, cimg_root, cimg_result = imgproc.ImgProc(sel_img)
+        
+        #이전 버전
+        #og_img = cv2.resize(og_img, None, fx  = 0.9, fy = 0.9, interpolation=cv2.INTER_AREA)
+        #re_img = cv2.resize(re_img, None, fx = 0.9, fy = 0.9, interpolation=cv2.INTER_AREA)
+        
+        #최신 버전
+        og_img = cv2.resize(og_img, (int(width*0.9), int(height*0.9)),interpolation=cv2.INTER_AREA)
+        re_img = cv2.resize(re_img, (int(width*0.7), int(height*0.7)), interpolation=cv2.INTER_AREA)
+
+        b, g, r = cv2.split(og_img)
+        og_img = cv2.merge([r,g,b])
+
+        #원본 이미지
+        og_height, og_width, channel = og_img.shape
+        og_qimg = QtGui.QImage(og_img.data, og_width, og_height, og_width*3, QtGui.QImage.Format_RGB888 )
+
+        #출력할 이미지
+        re_height, re_width, channel = re_img.shape
+        qimg = QtGui.QImage(re_img.data, re_width, re_height, re_width*3, QtGui.QImage.Format_RGB888 )
         #im.show()#확인용 열기.
-        self.label.setPixmap(QtGui.QPixmap('show.jpg'))
-        rgb_im1=rgb_im1.resize((width-500,height-100))
-        rgb_im1.save('show1.jpg')#배경 이미지 하나 넣을 것.
-        self.label1.setPixmap(QtGui.QPixmap('show1.jpg'))
+        self.label.setPixmap(QtGui.QPixmap(og_qimg))
+        
+
+        ##만들어줘야되는 부분
+        #if og_width > og_hegith:
+        #    #가로가 더 길때
+
+        #else :
+        #    #세로가 더 길때
+
+
+        self.label1.setPixmap(QtGui.QPixmap(qimg))
+
         self.pushButton_3.hide()#waiting 숨기기
         self.pushButton_2.show()#run 보이기
         
