@@ -194,11 +194,9 @@ class Ui_MainWindow(object):
         self.quit_btn.setText(_translate("MainWindow", "quit_btn"))
         self.save_btn.setText(_translate("MainWindow", "Save"))
         self.menuMenu.setTitle(_translate("MainWindow", "Menu"))
-        #self.menuOption.setTitle(_translate("MainWindow", "Option"))
         self.actionExit.setText(_translate("MainWindow", "exit"))
-        #self.actionLouge.setText(_translate("MainWindow", "louge"))
-        #self.label.setText(_translate("MainWindow", "TextLabel"))
-
+        
+        
     def find_btnClicked(self):
         file_path =  QFileDialog.getOpenFileName(None,'파일 탐색','c\\',"image files (*.png *.jpg)")
         print(file_path)
@@ -206,12 +204,19 @@ class Ui_MainWindow(object):
              self.label.setText("선택된 이미지가 없습니다.")  
              return
         file_path_str = str(file_path)#경로 string으로 변환
-        
-        global file_name
+        global file_name#파일이름 saveClicked이벤트에 전달용 변수
         #print(file_path_str)#경로 확인 현상태 경로+파일 타입
         path_adress = file_path_str.find(',')#경로길이 계산. ','을 기점으로 앞부분이 경로 뒷부분이 파일 유형.
         print(path_adress-1)
         print(file_path_str[1:path_adress])#(제외 처음부터 ","앞까지
+        #파일 이름 출력용
+        path_adress_name = file_path_str.find('.')#파일이름 위치 계산 '.'을 기점으로 앞부분만 필요함
+        print(path_adress_name-1)
+        print(file_path_str[1:path_adress_name])#'('제외 처음부터 "."앞까지
+        file_name=file_path_str[1:path_adress_name]
+        file_name= os.path.basename(file_name)#이름 추출용
+        print(file_name)
+
         sel_img= file_path_str[2:path_adress-1]
         print(file_path_str[1:path_adress])
         #sel_img1= sel_img.replace('\\','\\\\')#경로에 \ 하나가 더 추가되야 되서 저렇게 씀.
@@ -352,8 +357,13 @@ class Ui_MainWindow(object):
         Newline = '/'
         file_dir = file_dir+Newline
         print(file_dir)
-        
-
+        save_file_path= file_dir+file_name+".txt"
+        print(save_file_path)
+        save_file= open(save_file_path,'w')
+        for i in range(1, 11):#샘플용 파일입력
+            data = file_name+ "의 %d번째 줄입니다.\n" % i
+            save_file.write(data)
+        save_file.close()
         #dlg.find_btnClicked(self,sel_img)
         #id = dlg.id
         #password = dlg.password
