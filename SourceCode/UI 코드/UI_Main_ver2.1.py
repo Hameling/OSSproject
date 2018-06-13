@@ -174,9 +174,7 @@ class Ui_MainWindow(object):
         self.actionExit = QtWidgets.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
         #self.actionExit.triggered.cinnect(qApp.quit_btn)
-        self.actionLouge = QtWidgets.QAction(MainWindow)
-        self.actionLouge.setObjectName("actionLouge")
-        self.menuMenu.addAction(self.actionLouge)
+        #self.menuMenu.addAction(self.actionLouge)
         self.menuMenu.addAction(self.actionExit)
         self.actionExit.triggered.connect(self.actionExitClicked)
         self.menubar.addAction(self.menuMenu.menuAction())
@@ -196,9 +194,9 @@ class Ui_MainWindow(object):
         self.quit_btn.setText(_translate("MainWindow", "quit_btn"))
         self.save_btn.setText(_translate("MainWindow", "Save"))
         self.menuMenu.setTitle(_translate("MainWindow", "Menu"))
-        self.menuOption.setTitle(_translate("MainWindow", "Option"))
+        #self.menuOption.setTitle(_translate("MainWindow", "Option"))
         self.actionExit.setText(_translate("MainWindow", "exit"))
-        self.actionLouge.setText(_translate("MainWindow", "louge"))
+        #self.actionLouge.setText(_translate("MainWindow", "louge"))
         #self.label.setText(_translate("MainWindow", "TextLabel"))
 
     def find_btnClicked(self):
@@ -295,7 +293,7 @@ class Ui_MainWindow(object):
                
 
     def actionExitClicked(self):#종료
-        quit_btn()
+        quit()
     
     def run_btnClicked(self):
         #dlg = ResultDialog()
