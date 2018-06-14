@@ -73,11 +73,21 @@ class Ui_MainWindow(object):
         self.quit_btn.setGeometry(QtCore.QRect(width-btn_x, height-150, 63, 51))
         self.quit_btn.setObjectName("quit_btn")
         self.quit_btn.clicked.connect(self.quit_btnClicked)
+        quit_icon = QtGui.QIcon()
+        quit_icon.addPixmap(QtGui.QPixmap("quit_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.quit_btn.setIcon(quit_icon)
+        self.quit_btn.setIconSize(QtCore.QSize(50, 50))
+        self.quit_btn.setStyleSheet("background-color :#00ff0000")
         #save
         self.save_btn = QtWidgets.QPushButton(self.centralwidget)
         self.save_btn.setGeometry(QtCore.QRect(width-btn_x, height-250, 63, 51))
         self.save_btn.setObjectName("save_btn")
         self.save_btn.clicked.connect(self.saveClicked)
+        save_icon = QtGui.QIcon()
+        save_icon.addPixmap(QtGui.QPixmap("save_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.save_btn.setIcon(save_icon)
+        self.save_btn.setIconSize(QtCore.QSize(50, 50))
+        self.save_btn.setStyleSheet("background-color :#00ff0000")
         self.save_btn.hide()
         
         #label 올릴 거
@@ -191,8 +201,8 @@ class Ui_MainWindow(object):
         self.find_btn.setText(_translate("MainWindow", ""))
         self.run_btn.setText(_translate("MainWindow", ""))
         self.reset_btn.setText(_translate("MainWindow", ""))
-        self.quit_btn.setText(_translate("MainWindow", "quit_btn"))
-        self.save_btn.setText(_translate("MainWindow", "Save"))
+        self.quit_btn.setText(_translate("MainWindow", ""))
+        self.save_btn.setText(_translate("MainWindow", ""))
         self.menuMenu.setTitle(_translate("MainWindow", "Menu"))
         self.actionExit.setText(_translate("MainWindow", "exit"))
         
@@ -290,6 +300,8 @@ class Ui_MainWindow(object):
         self.label1.hide()
         self.label2.hide()
         self.textBrowser.hide()
+        self.textBrowser.clear()
+        self.textBrowser1.clear()
         self.textBrowser1.hide()
         self.label.show()
 
