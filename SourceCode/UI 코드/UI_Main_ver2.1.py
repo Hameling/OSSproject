@@ -28,6 +28,8 @@ class Ui_MainWindow(object):
         height= 800
         btn_x = 80
         
+        contoured_img_root
+        contoured_img
         
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(width, height)
@@ -37,7 +39,7 @@ class Ui_MainWindow(object):
         self.find_btn = QtWidgets.QPushButton(self.centralwidget)
         self.find_btn.setGeometry(QtCore.QRect(width-btn_x, height-790, width/15, height/10))
         self.find_btn.setObjectName("find_btn")
-        self.find_btn.clicked.connect(self.find_btnClicked)
+        self.find_btn.clicked.connect(contoured_img_root, contoured_img = self.find_btnClicked)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("find_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.find_btn.setIcon(icon)
@@ -293,7 +295,7 @@ class Ui_MainWindow(object):
         self.textBrowser1.hide()
         self.label.show()
 
-        
+        return cimg_root, cimg_result
 
                
 
