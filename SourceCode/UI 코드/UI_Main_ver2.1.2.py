@@ -358,7 +358,8 @@ class Ui_MainWindow(object):
         
         #로딩 이미지 시작
         movie.start()
-        #movie.stap()#멈추는 용도
+        #movie.stop()#멈추는 용도
+        #self.loading_label,hide()
 
         
         if control == "h" :
