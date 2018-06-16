@@ -29,8 +29,6 @@ class Ui_MainWindow(object):
         height= 800
         btn_x = 80
         
-        contoured_img_root
-        contoured_img
 
         gif = "loading.gif"#로딩이미지 삽입
         global movie#gif용 변수
@@ -59,9 +57,9 @@ class Ui_MainWindow(object):
         self.find_btn = QtWidgets.QPushButton(self.centralwidget)
         self.find_btn.setGeometry(QtCore.QRect(width-btn_x, height-790, width/15, height/10))
         self.find_btn.setObjectName("find_btn")
-        self.find_btn.clicked.connect(contoured_img_root, contoured_img = self.find_btnClicked)
+        self.find_btn.clicked.connect(self.find_btnClicked)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("find_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("./icon_image/find_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.find_btn.setIcon(icon)
         self.find_btn.setIconSize(QtCore.QSize(50, 50))
         self.find_btn.setStyleSheet("background-color :#00ff0000")
@@ -72,7 +70,7 @@ class Ui_MainWindow(object):
         self.run_btn.setObjectName("run_btn")
         self.run_btn.clicked.connect(self.loading)
         run_icon = QtGui.QIcon()
-        run_icon.addPixmap(QtGui.QPixmap("run_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        run_icon.addPixmap(QtGui.QPixmap("./icon_image/run_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.run_btn.setIcon(run_icon)
         self.run_btn.setIconSize(QtCore.QSize(50, 50))
         self.run_btn.setStyleSheet("background-color :#00ff0000")
@@ -84,7 +82,8 @@ class Ui_MainWindow(object):
         self.reset_btn.setObjectName("reset_btn")
         self.reset_btn.clicked.connect(self.reset_btnClicked)
         reset_icon = QtGui.QIcon()
-        reset_icon.addPixmap(QtGui.QPixmap("reset_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #reset_icon.addPixmap(QtGui.QPixmap("C:/Users/user/Documents/OSSproject/SourceCode/icon_image/reset_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        reset_icon.addPixmap(QtGui.QPixmap("./icon_image/reset_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.reset_btn.setIcon(reset_icon)
         self.reset_btn.setIconSize(QtCore.QSize(50, 50))
         self.reset_btn.setStyleSheet("background-color :#00ff0000")
@@ -96,7 +95,7 @@ class Ui_MainWindow(object):
         self.quit_btn.setObjectName("quit_btn")
         self.quit_btn.clicked.connect(self.quit_btnClicked)
         quit_icon = QtGui.QIcon()
-        quit_icon.addPixmap(QtGui.QPixmap("quit_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        quit_icon.addPixmap(QtGui.QPixmap("./icon_image/quit_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.quit_btn.setIcon(quit_icon)
         self.quit_btn.setIconSize(QtCore.QSize(50, 50))
         self.quit_btn.setStyleSheet("background-color :#00ff0000")
@@ -107,7 +106,7 @@ class Ui_MainWindow(object):
         self.save_btn.setObjectName("save_btn")
         self.save_btn.clicked.connect(self.saveClicked)
         save_icon = QtGui.QIcon()
-        save_icon.addPixmap(QtGui.QPixmap("save_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        save_icon.addPixmap(QtGui.QPixmap("./icon_image/save_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.save_btn.setIcon(save_icon)
         self.save_btn.setIconSize(QtCore.QSize(50, 50))
         self.save_btn.setStyleSheet("background-color :#00ff0000")
@@ -174,11 +173,24 @@ class Ui_MainWindow(object):
         self.gridLayout4.setObjectName("gridLayout1")
         
         #가로가 길 경우의 텍스트 브라우저
+
         self.textBrowser1 = QtWidgets.QTextBrowser(self.gridLayoutWidget4)
         self.textBrowser1.setObjectName("textBrowser")
         self.gridLayout4.addWidget(self.textBrowser1, 0, 0, 0,0)
         self.textBrowser1.hide()
        
+        #로딩용 이미지 삽입
+        self.loading_grid = QtWidgets.QWidget(self.centralwidget)
+        self.loading_grid.setGeometry(QtCore.QRect(width-600, height-650, width-600, height-400))
+        self.loading_grid.setObjectName("loading")
+        self.loading_gridLayout= QtWidgets.QGridLayout(self.loading_grid)
+        self.loading_gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.loading_gridLayout.setObjectName("gridLayout1")
+        
+        self.loading_label = QtWidgets.QLabel(self.loading_grid)#라벨 생성
+        self.loading_label.setText("")
+        self.loading_label.setMovie(movie)
+
        
 
         self.back_gridLayout.addWidget(self.back_label, 0,0, 0, 0)#그리드 레이아웃 내의위치
@@ -325,7 +337,7 @@ class Ui_MainWindow(object):
         self.label.show()
         self.loading_label.hide()
 
-        return cimg_root, cimg_result
+        #return cimg_root, cimg_result
 
                
     def actionExitClicked(self):#종료
