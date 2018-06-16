@@ -16,7 +16,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 import imgproc
 import numpy as np
-
+import json
+from PyQt5.QtGui import QMovie#gif용
 
 
 class Ui_MainWindow(object):
@@ -30,11 +31,30 @@ class Ui_MainWindow(object):
         
         contoured_img_root
         contoured_img
+
+        gif = "loading.gif"#로딩이미지 삽입
+        global movie#gif용 변수
+        movie = QMovie(gif)#변수에 이미지 삽입
+        
         
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(width, height)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+        #배경이미지 제어용 코드
+        self.backGrid = QtWidgets.QWidget(self.centralwidget)
+        self.backGrid.setGeometry(QtCore.QRect(width-width, height-height, width, height))
+        self.backGrid.setObjectName("gridLayoutWidget")
+        self.back_gridLayout = QtWidgets.QGridLayout(self.backGrid)
+        self.back_gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.back_gridLayout.setObjectName("gridLayout")
+
+        self.back_label = QtWidgets.QLabel(self.backGrid)#라벨 생성
+        self.back_label.setText("")
+        self.back_label.setPixmap(QtGui.QPixmap("white.png"))#시작 텍스트
+        self.back_label.setObjectName("label")#라벨 이름
+
         #find_btn 버튼 클릭 이벤트 생성
         self.find_btn = QtWidgets.QPushButton(self.centralwidget)
         self.find_btn.setGeometry(QtCore.QRect(width-btn_x, height-790, width/15, height/10))
@@ -50,7 +70,7 @@ class Ui_MainWindow(object):
         self.run_btn = QtWidgets.QPushButton(self.centralwidget)
         self.run_btn.setGeometry(QtCore.QRect(width-btn_x, height-470, width/15, height/10))
         self.run_btn.setObjectName("run_btn")
-        self.run_btn.clicked.connect(self.run_btnClicked)
+        self.run_btn.clicked.connect(self.loading)
         run_icon = QtGui.QIcon()
         run_icon.addPixmap(QtGui.QPixmap("run_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.run_btn.setIcon(run_icon)
@@ -80,6 +100,7 @@ class Ui_MainWindow(object):
         self.quit_btn.setIcon(quit_icon)
         self.quit_btn.setIconSize(QtCore.QSize(50, 50))
         self.quit_btn.setStyleSheet("background-color :#00ff0000")
+
         #save
         self.save_btn = QtWidgets.QPushButton(self.centralwidget)
         self.save_btn.setGeometry(QtCore.QRect(width-btn_x, height-250, 63, 51))
@@ -104,10 +125,10 @@ class Ui_MainWindow(object):
         self.label.setText("")
         self.label.setPixmap(QtGui.QPixmap("background.png"))#시작 텍스트
         self.label.setObjectName("label")#라벨 이름
-        #self.label.hide()
+        
         #label1올릴거
         self.gridLayoutWidget1 = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget1.setGeometry(QtCore.QRect(width-990, height-790, width-500, height-100))
+        self.gridLayoutWidget1.setGeometry(QtCore.QRect(width-990, height-790, width-510, height-100))
         self.gridLayoutWidget1.setObjectName("gridLayoutWidget1")
         self.gridLayout1 = QtWidgets.QGridLayout(self.gridLayoutWidget1)
         self.gridLayout1.setContentsMargins(0, 0, 0, 0)
@@ -146,7 +167,7 @@ class Ui_MainWindow(object):
 
         #가로가 길 경우의 텍스트 브라우저 올릴 레이아웃
         self.gridLayoutWidget4 = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget4.setGeometry(QtCore.QRect(width-990, height-200, width-100, height-700))
+        self.gridLayoutWidget4.setGeometry(QtCore.QRect(width-990, height-120, width-100, height-700))
         self.gridLayoutWidget4.setObjectName("gridLayoutWidget1")
         self.gridLayout4 = QtWidgets.QGridLayout(self.gridLayoutWidget4)
         self.gridLayout4.setContentsMargins(0, 0, 0, 0)
@@ -160,10 +181,11 @@ class Ui_MainWindow(object):
        
        
 
-        
+        self.back_gridLayout.addWidget(self.back_label, 0,0, 0, 0)#그리드 레이아웃 내의위치
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)#그리드 레이아웃 내의위치
         self.gridLayout1.addWidget(self.label1, 0, 0, 1, 1)#그리드 레이아웃 내의위치
         self.gridLayout3.addWidget(self.label2, 0, 0, 1, 1)#그리드 레이아웃 내의위치
+        self.loading_gridLayout.addWidget(self.loading_label, 0, 0, 1, 1)#그리드 레이아웃 내의위치
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 807, 21))
@@ -185,8 +207,6 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionExit = QtWidgets.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
-        #self.actionExit.triggered.cinnect(qApp.quit_btn)
-        #self.menuMenu.addAction(self.actionLouge)
         self.menuMenu.addAction(self.actionExit)
         self.actionExit.triggered.connect(self.actionExitClicked)
         self.menubar.addAction(self.menuMenu.menuAction())
@@ -217,7 +237,6 @@ class Ui_MainWindow(object):
              return
         file_path_str = str(file_path)#경로 string으로 변환
         global file_name#파일이름 saveClicked이벤트에 전달용 변수
-        #print(file_path_str)#경로 확인 현상태 경로+파일 타입
         path_adress = file_path_str.find(',')#경로길이 계산. ','을 기점으로 앞부분이 경로 뒷부분이 파일 유형.
         print(path_adress-1)
         print(file_path_str[1:path_adress])#(제외 처음부터 ","앞까지
@@ -231,9 +250,7 @@ class Ui_MainWindow(object):
 
         sel_img= file_path_str[2:path_adress-1]
         print(file_path_str[1:path_adress])
-        #sel_img1= sel_img.replace('\\','\\\\')#경로에 \ 하나가 더 추가되야 되서 저렇게 씀.
         print(sel_img,"\n\n\n")#경로 재확인
-        #im = Image.open(sel_img)#이미지 받음
         
         og_img, re_img, cimg_root, cimg_result = imgproc.ImgProc(sel_img)
         
@@ -306,18 +323,25 @@ class Ui_MainWindow(object):
         self.textBrowser1.clear()
         self.textBrowser1.hide()
         self.label.show()
+        self.loading_label.hide()
 
         return cimg_root, cimg_result
 
                
-
     def actionExitClicked(self):#종료
         quit()
+
+    def loading(self):
+        self.loading_label.show()
+        movie.start()
+        
+
     
-    def run_btnClicked(self):
-        #dlg = ResultDialog()
-        #dlg.exec_()
+    def run_btnClicked(self):#따로 호출해주면 됨
+        #코드는 self.run_btnClicked()#이거 말고 시그널 끝나면 거기서 호출로. 안그러면 작동 안됨.
         self.label.hide()#화면 전환
+        movie.stop()
+        self.loading_label.hide()
         self.label1.hide()
         self.label2.hide()
         self.textBrowser.hide()
@@ -325,6 +349,7 @@ class Ui_MainWindow(object):
         self.run_btn.hide()
         self.save_btn.show()
         self.run_btn.hide()
+        
         if control == "h" :
             self.label1.show()#화면 전환
             self.textBrowser.show()
@@ -352,7 +377,8 @@ class Ui_MainWindow(object):
 
     def reset_btnClicked(self):#초기 화면 상태로 회귀
         self.run_btn.hide()
-        self.label.setPixmap(QtGui.QPixmap("background.png"))#시작 텍스트
+        self.label.setPixmap(QtGui.QPixmap("background.png"))#시작이미지
+        self.back_label.setPixmap(QtGui.QPixmap("white.png"))#시작배경
         self.label1.hide()
         self.label2.hide()
         self.label.show()
@@ -361,6 +387,8 @@ class Ui_MainWindow(object):
         self.textBrowser.hide()
         self.textBrowser1.clear()
         self.textBrowser1.hide()
+        self.loading_label.hide()#로딩이미지 감추기
+        movie.stop()#gif멈추기
 
     def quit_btnClicked(self):#종료
         MainWindow.close()
