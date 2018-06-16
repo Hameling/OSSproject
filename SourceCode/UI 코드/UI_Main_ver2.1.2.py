@@ -18,6 +18,7 @@ from PyQt5.QtGui import QMovie#gif용
 import imgproc
 import numpy as np
 import json
+import time
 
 
 
@@ -67,7 +68,7 @@ class Ui_MainWindow(object):
         self.run_btn = QtWidgets.QPushButton(self.centralwidget)
         self.run_btn.setGeometry(QtCore.QRect(width-btn_x, height-470, width/15, height/10))
         self.run_btn.setObjectName("run_btn")
-        self.run_btn.clicked.connect(self.run_btnClicked)
+        self.run_btn.clicked.connect(self.loading)
         run_icon = QtGui.QIcon()
         run_icon.addPixmap(QtGui.QPixmap("run_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.run_btn.setIcon(run_icon)
@@ -334,6 +335,7 @@ class Ui_MainWindow(object):
         self.textBrowser1.clear()
         self.textBrowser1.hide()
         self.label.show()
+        self.loading_label.hide()
         
         
 
@@ -342,10 +344,17 @@ class Ui_MainWindow(object):
     def actionExitClicked(self):#종료
         quit()
     
+
+    def loading(self):
+        self.loading_label.show()
+        movie.start()
+        #self.run_btnClicked()#이거 말고 시그널 끝나면 거기서 호출로. 안그러면 작동 안됨.
+
     def run_btnClicked(self):
         #dlg = ResultDialog()
         #dlg.exec_()
-        self.label.hide()#화면 전환
+        self.label.hide()
+        self.loading_label.hide()
         self.label1.hide()
         self.label2.hide()
         self.textBrowser.hide()
@@ -354,13 +363,7 @@ class Ui_MainWindow(object):
         self.save_btn.show()
         self.run_btn.hide()
         #로딩이미지 보여주기
-        self.loading_label.show()
         
-        #로딩 이미지 시작
-        movie.start()
-        #movie.stop()#멈추는 용도
-        #self.loading_label,hide()
-
         
         if control == "h" :
             self.back_label.setPixmap(QtGui.QPixmap("black.png"))
