@@ -354,6 +354,7 @@ class Ui_MainWindow(object):
         #dlg = ResultDialog()
         #dlg.exec_()
         self.label.hide()
+        movie.stop()
         self.loading_label.hide()
         self.label1.hide()
         self.label2.hide()
