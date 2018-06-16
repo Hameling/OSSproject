@@ -1,4 +1,4 @@
-ï»¿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'aaaaa.ui'
 #
@@ -14,10 +14,12 @@ from tkinter import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from PyQt5.QtGui import QMovie#gif¿ë
 import imgproc
 import numpy as np
 import json
-from PyQt5.QtGui import QMovie#gifìš©
+import time
+
 
 
 class Ui_MainWindow(object):
@@ -28,19 +30,16 @@ class Ui_MainWindow(object):
         global height
         height= 800
         btn_x = 80
-        
-
-        gif = "loading.gif"#ë¡œë”©ì´ë¯¸ì§€ ì‚½ì…
-        global movie#gifìš© ë³€ìˆ˜
-        movie = QMovie(gif)#ë³€ìˆ˜ì— ì´ë¯¸ì§€ ì‚½ì…
-        
-        
+        gif = "loading.gif"#·ÎµùÀÌ¹ÌÁö »ğÀÔ
+        global movie#gif¿ë º¯¼ö
+        movie = QMovie(gif)#º¯¼ö¿¡ ÀÌ¹ÌÁö »ğÀÔ
+       
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(width, height)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
-        #ë°°ê²½ì´ë¯¸ì§€ ì œì–´ìš© ì½”ë“œ
+        #¹è°æÀÌ¹ÌÁö Á¦¾î¿ë ÄÚµå
         self.backGrid = QtWidgets.QWidget(self.centralwidget)
         self.backGrid.setGeometry(QtCore.QRect(width-width, height-height, width, height))
         self.backGrid.setObjectName("gridLayoutWidget")
@@ -48,42 +47,42 @@ class Ui_MainWindow(object):
         self.back_gridLayout.setContentsMargins(0, 0, 0, 0)
         self.back_gridLayout.setObjectName("gridLayout")
 
-        self.back_label = QtWidgets.QLabel(self.backGrid)#ë¼ë²¨ ìƒì„±
+        self.back_label = QtWidgets.QLabel(self.backGrid)#¶óº§ »ı¼º
         self.back_label.setText("")
-        self.back_label.setPixmap(QtGui.QPixmap("white.png"))#ì‹œì‘ í…ìŠ¤íŠ¸
-        self.back_label.setObjectName("label")#ë¼ë²¨ ì´ë¦„
+        self.back_label.setPixmap(QtGui.QPixmap("white.png"))#½ÃÀÛ ÅØ½ºÆ®
+        self.back_label.setObjectName("label")#¶óº§ ÀÌ¸§
+        
 
-        #find_btn ë²„íŠ¼ í´ë¦­ ì´ë²¤íŠ¸ ìƒì„±
+        #find_btn ¹öÆ° Å¬¸¯ ÀÌº¥Æ® »ı¼º
         self.find_btn = QtWidgets.QPushButton(self.centralwidget)
         self.find_btn.setGeometry(QtCore.QRect(width-btn_x, height-790, width/15, height/10))
         self.find_btn.setObjectName("find_btn")
         self.find_btn.clicked.connect(self.find_btnClicked)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./icon_image/find_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("find_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.find_btn.setIcon(icon)
         self.find_btn.setIconSize(QtCore.QSize(50, 50))
         self.find_btn.setStyleSheet("background-color :#00ff0000")
         
-        #run_btn_btnë²„íŠ¼ í´ë¦­ ì´ë²¤íŠ¸ ìƒì„±.
+        #run_btn_btn¹öÆ° Å¬¸¯ ÀÌº¥Æ® »ı¼º.
         self.run_btn = QtWidgets.QPushButton(self.centralwidget)
         self.run_btn.setGeometry(QtCore.QRect(width-btn_x, height-470, width/15, height/10))
         self.run_btn.setObjectName("run_btn")
         self.run_btn.clicked.connect(self.loading)
         run_icon = QtGui.QIcon()
-        run_icon.addPixmap(QtGui.QPixmap("./icon_image/run_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        run_icon.addPixmap(QtGui.QPixmap("run_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.run_btn.setIcon(run_icon)
         self.run_btn.setIconSize(QtCore.QSize(50, 50))
         self.run_btn.setStyleSheet("background-color :#00ff0000")
         self.run_btn.hide()
         
-        #ë¦¬ì…‹ë²„íŠ¼ ìƒì„± ë° ì´ë²¤íŠ¸
+        #¸®¼Â¹öÆ° »ı¼º ¹× ÀÌº¥Æ®
         self.reset_btn = QtWidgets.QPushButton(self.centralwidget)
         self.reset_btn.setGeometry(QtCore.QRect(width-btn_x, height-650, width/15, height/10))
         self.reset_btn.setObjectName("reset_btn")
         self.reset_btn.clicked.connect(self.reset_btnClicked)
         reset_icon = QtGui.QIcon()
-        #reset_icon.addPixmap(QtGui.QPixmap("C:/Users/user/Documents/OSSproject/SourceCode/icon_image/reset_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        reset_icon.addPixmap(QtGui.QPixmap("./icon_image/reset_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        reset_icon.addPixmap(QtGui.QPixmap("reset_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.reset_btn.setIcon(reset_icon)
         self.reset_btn.setIconSize(QtCore.QSize(50, 50))
         self.reset_btn.setStyleSheet("background-color :#00ff0000")
@@ -95,62 +94,61 @@ class Ui_MainWindow(object):
         self.quit_btn.setObjectName("quit_btn")
         self.quit_btn.clicked.connect(self.quit_btnClicked)
         quit_icon = QtGui.QIcon()
-        quit_icon.addPixmap(QtGui.QPixmap("./icon_image/quit_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        quit_icon.addPixmap(QtGui.QPixmap("quit_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.quit_btn.setIcon(quit_icon)
         self.quit_btn.setIconSize(QtCore.QSize(50, 50))
         self.quit_btn.setStyleSheet("background-color :#00ff0000")
-
         #save
         self.save_btn = QtWidgets.QPushButton(self.centralwidget)
         self.save_btn.setGeometry(QtCore.QRect(width-btn_x, height-250, 63, 51))
         self.save_btn.setObjectName("save_btn")
         self.save_btn.clicked.connect(self.saveClicked)
         save_icon = QtGui.QIcon()
-        save_icon.addPixmap(QtGui.QPixmap("./icon_image/save_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        save_icon.addPixmap(QtGui.QPixmap("save_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.save_btn.setIcon(save_icon)
         self.save_btn.setIconSize(QtCore.QSize(50, 50))
         self.save_btn.setStyleSheet("background-color :#00ff0000")
         self.save_btn.hide()
         
-        #label ì˜¬ë¦´ ê±°
+        #label ¿Ã¸± °Å
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(width-990, height-790, width-100, height-100))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setContentsMargins(0, 0, 1, 1)
         self.gridLayout.setObjectName("gridLayout")
-        #ì•„ë˜ë¶€í„° ì´ë¯¸ì§€ ë³´ì¼ ë¼ë²¨ ìƒì„±
-        self.label = QtWidgets.QLabel(self.gridLayoutWidget)#ë¼ë²¨ ìƒì„±
+        #¾Æ·¡ºÎÅÍ ÀÌ¹ÌÁö º¸ÀÏ ¶óº§ »ı¼º
+        self.label = QtWidgets.QLabel(self.gridLayoutWidget)#¶óº§ »ı¼º
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("background.png"))#ì‹œì‘ í…ìŠ¤íŠ¸
-        self.label.setObjectName("label")#ë¼ë²¨ ì´ë¦„
-        
-        #label1ì˜¬ë¦´ê±°
+        self.label.setPixmap(QtGui.QPixmap("background.png"))#½ÃÀÛ ÅØ½ºÆ®
+        self.label.setObjectName("label")#¶óº§ ÀÌ¸§
+        #self.label.hide()
+        #label1¿Ã¸±°Å
         self.gridLayoutWidget1 = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget1.setGeometry(QtCore.QRect(width-990, height-790, width-510, height-100))
+        self.gridLayoutWidget1.setGeometry(QtCore.QRect(width-990, height-790, width-500, height-100))
         self.gridLayoutWidget1.setObjectName("gridLayoutWidget1")
         self.gridLayout1 = QtWidgets.QGridLayout(self.gridLayoutWidget1)
         self.gridLayout1.setContentsMargins(0, 0, 0, 0)
         self.gridLayout1.setObjectName("gridLayout1")
-         #ì•„ë˜ë¶€í„° ì´ë²¤íŠ¸ í›„ ì´ë¯¸ì§€ ìƒì„±.
-        self.label1 = QtWidgets.QLabel(self.gridLayoutWidget1)#ë¼ë²¨ ìƒì„±
+         #¾Æ·¡ºÎÅÍ ÀÌº¥Æ® ÈÄ ÀÌ¹ÌÁö »ı¼º.
+        self.label1 = QtWidgets.QLabel(self.gridLayoutWidget1)#¶óº§ »ı¼º
         self.label1.setText("")
-        self.label1.setPixmap(QtGui.QPixmap("556.jpg"))#ì‹œì‘ í…ìŠ¤íŠ¸
+        self.label1.setPixmap(QtGui.QPixmap("556.jpg"))#½ÃÀÛ ÅØ½ºÆ®
         self.label1.hide()
-        #í…ìŠ¤íŠ¸ ë¸Œë¼ìš°ì € ì˜¬ë¦´ ê³³.
+        #ÅØ½ºÆ® ºê¶ó¿ìÀú ¿Ã¸± °÷.
         self.gridLayoutWidget2 = QtWidgets.QWidget(self.centralwidget)
         self.gridLayoutWidget2.setGeometry(QtCore.QRect(width-490, height-790, width-600, height-100))
         self.gridLayoutWidget2.setObjectName("gridLayoutWidget2")
         self.gridLayout2 = QtWidgets.QGridLayout(self.gridLayoutWidget2)
         self.gridLayout2.setContentsMargins(0, 0, 0, 0)
         self.gridLayout2.setObjectName("gridLayout2")
-        #í…ìŠ¤íŠ¸ ì—ë¦¬ì–´ ì‚½ì…
+        #ÅØ½ºÆ® ¿¡¸®¾î »ğÀÔ
         self.textBrowser = QtWidgets.QTextBrowser(self.gridLayoutWidget2)
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout2.addWidget(self.textBrowser, 0, 0, 0,0)
         self.textBrowser.hide()
 
-        #ê°€ë¡œê°€ ê¸¸ ê²½ìš°ì˜ ì´ë¯¸ì§€ ë¼ë²¨ì˜¬ë¦´ ë ˆì´ì•„ì›ƒ
+        #°¡·Î°¡ ±æ °æ¿ìÀÇ ÀÌ¹ÌÁö ¶óº§¿Ã¸± ·¹ÀÌ¾Æ¿ô
         self.gridLayoutWidget3 = QtWidgets.QWidget(self.centralwidget)
         self.gridLayoutWidget3.setGeometry(QtCore.QRect(width-990, height-790, width-100, height-150))
         self.gridLayoutWidget3.setObjectName("gridLayoutWidget1")
@@ -158,28 +156,27 @@ class Ui_MainWindow(object):
         self.gridLayout3.setContentsMargins(0, 0, 0, 0)
         self.gridLayout3.setObjectName("gridLayout1")
         
-        #ê°€ë¡œê°€ ê¸¸ ê²½ìš°ì˜ ì´ë¯¸ì§€ ë¼ë²¨
-        self.label2 = QtWidgets.QLabel(self.gridLayoutWidget3)#ë¼ë²¨ ìƒì„±
+        #°¡·Î°¡ ±æ °æ¿ìÀÇ ÀÌ¹ÌÁö ¶óº§
+        self.label2 = QtWidgets.QLabel(self.gridLayoutWidget3)#¶óº§ »ı¼º
         self.label2.setText("")
-        self.label2.setPixmap(QtGui.QPixmap("black.png"))#ì‹œì‘ ì´ë¯¸ì§€
+        self.label2.setPixmap(QtGui.QPixmap("black.png"))#½ÃÀÛ ÀÌ¹ÌÁö
         self.label2.hide()
 
-        #ê°€ë¡œê°€ ê¸¸ ê²½ìš°ì˜ í…ìŠ¤íŠ¸ ë¸Œë¼ìš°ì € ì˜¬ë¦´ ë ˆì´ì•„ì›ƒ
+        #°¡·Î°¡ ±æ °æ¿ìÀÇ ÅØ½ºÆ® ºê¶ó¿ìÀú ¿Ã¸± ·¹ÀÌ¾Æ¿ô
         self.gridLayoutWidget4 = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget4.setGeometry(QtCore.QRect(width-990, height-120, width-100, height-700))
+        self.gridLayoutWidget4.setGeometry(QtCore.QRect(width-990, height-200, width-100, height-700))
         self.gridLayoutWidget4.setObjectName("gridLayoutWidget1")
         self.gridLayout4 = QtWidgets.QGridLayout(self.gridLayoutWidget4)
         self.gridLayout4.setContentsMargins(0, 0, 0, 0)
         self.gridLayout4.setObjectName("gridLayout1")
         
-        #ê°€ë¡œê°€ ê¸¸ ê²½ìš°ì˜ í…ìŠ¤íŠ¸ ë¸Œë¼ìš°ì €
-
+        #°¡·Î°¡ ±æ °æ¿ìÀÇ ÅØ½ºÆ® ºê¶ó¿ìÀú
         self.textBrowser1 = QtWidgets.QTextBrowser(self.gridLayoutWidget4)
         self.textBrowser1.setObjectName("textBrowser")
         self.gridLayout4.addWidget(self.textBrowser1, 0, 0, 0,0)
         self.textBrowser1.hide()
-       
-        #ë¡œë”©ìš© ì´ë¯¸ì§€ ì‚½ì…
+
+        #·Îµù¿ë ÀÌ¹ÌÁö »ğÀÔ
         self.loading_grid = QtWidgets.QWidget(self.centralwidget)
         self.loading_grid.setGeometry(QtCore.QRect(width-600, height-650, width-600, height-400))
         self.loading_grid.setObjectName("loading")
@@ -187,17 +184,15 @@ class Ui_MainWindow(object):
         self.loading_gridLayout.setContentsMargins(0, 0, 0, 0)
         self.loading_gridLayout.setObjectName("gridLayout1")
         
-        self.loading_label = QtWidgets.QLabel(self.loading_grid)#ë¼ë²¨ ìƒì„±
+        self.loading_label = QtWidgets.QLabel(self.loading_grid)#¶óº§ »ı¼º
         self.loading_label.setText("")
         self.loading_label.setMovie(movie)
-
-       
-
-        self.back_gridLayout.addWidget(self.back_label, 0,0, 0, 0)#ê·¸ë¦¬ë“œ ë ˆì´ì•„ì›ƒ ë‚´ì˜ìœ„ì¹˜
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)#ê·¸ë¦¬ë“œ ë ˆì´ì•„ì›ƒ ë‚´ì˜ìœ„ì¹˜
-        self.gridLayout1.addWidget(self.label1, 0, 0, 1, 1)#ê·¸ë¦¬ë“œ ë ˆì´ì•„ì›ƒ ë‚´ì˜ìœ„ì¹˜
-        self.gridLayout3.addWidget(self.label2, 0, 0, 1, 1)#ê·¸ë¦¬ë“œ ë ˆì´ì•„ì›ƒ ë‚´ì˜ìœ„ì¹˜
-        self.loading_gridLayout.addWidget(self.loading_label, 0, 0, 1, 1)#ê·¸ë¦¬ë“œ ë ˆì´ì•„ì›ƒ ë‚´ì˜ìœ„ì¹˜
+        
+        self.back_gridLayout.addWidget(self.back_label, 0,0, 0, 0)#±×¸®µå ·¹ÀÌ¾Æ¿ô ³»ÀÇÀ§Ä¡
+        self.gridLayout.addWidget(self.label, 0,0, 0, 0)#±×¸®µå ·¹ÀÌ¾Æ¿ô ³»ÀÇÀ§Ä¡
+        self.gridLayout1.addWidget(self.label1, 0, 0, 1, 1)#±×¸®µå ·¹ÀÌ¾Æ¿ô ³»ÀÇÀ§Ä¡
+        self.gridLayout3.addWidget(self.label2, 0, 0, 1, 1)#±×¸®µå ·¹ÀÌ¾Æ¿ô ³»ÀÇÀ§Ä¡
+        self.loading_gridLayout.addWidget(self.loading_label, 0, 0, 1, 1)#±×¸®µå ·¹ÀÌ¾Æ¿ô ³»ÀÇÀ§Ä¡
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 807, 21))
@@ -219,6 +214,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionExit = QtWidgets.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
+        #self.actionExit.triggered.cinnect(qApp.quit_btn)
+        #self.menuMenu.addAction(self.actionLouge)
         self.menuMenu.addAction(self.actionExit)
         self.actionExit.triggered.connect(self.actionExitClicked)
         self.menubar.addAction(self.menuMenu.menuAction())
@@ -242,39 +239,42 @@ class Ui_MainWindow(object):
         
         
     def find_btnClicked(self):
-        file_path =  QFileDialog.getOpenFileName(None,'íŒŒì¼ íƒìƒ‰','c\\',"image files (*.png *.jpg)")
+        file_path =  QFileDialog.getOpenFileName(None,'ÆÄÀÏ Å½»ö','c\\',"image files (*.png *.jpg)")
         print(file_path)
         if(file_path==('', '')):
-             self.label.setText("ì„ íƒëœ ì´ë¯¸ì§€ê°€ ì—†ìŠµë‹ˆë‹¤.")  
+             self.label.setText("¼±ÅÃµÈ ÀÌ¹ÌÁö°¡ ¾ø½À´Ï´Ù.")  
              return
-        file_path_str = str(file_path)#ê²½ë¡œ stringìœ¼ë¡œ ë³€í™˜
-        global file_name#íŒŒì¼ì´ë¦„ saveClickedì´ë²¤íŠ¸ì— ì „ë‹¬ìš© ë³€ìˆ˜
-        path_adress = file_path_str.find(',')#ê²½ë¡œê¸¸ì´ ê³„ì‚°. ','ì„ ê¸°ì ìœ¼ë¡œ ì•ë¶€ë¶„ì´ ê²½ë¡œ ë’·ë¶€ë¶„ì´ íŒŒì¼ ìœ í˜•.
+        file_path_str = str(file_path)#°æ·Î stringÀ¸·Î º¯È¯
+        global file_name#ÆÄÀÏÀÌ¸§ saveClickedÀÌº¥Æ®¿¡ Àü´Ş¿ë º¯¼ö
+        #print(file_path_str)#°æ·Î È®ÀÎ Çö»óÅÂ °æ·Î+ÆÄÀÏ Å¸ÀÔ
+        path_adress = file_path_str.find(',')#°æ·Î±æÀÌ °è»ê. ','À» ±âÁ¡À¸·Î ¾ÕºÎºĞÀÌ °æ·Î µŞºÎºĞÀÌ ÆÄÀÏ À¯Çü.
         print(path_adress-1)
-        print(file_path_str[1:path_adress])#(ì œì™¸ ì²˜ìŒë¶€í„° ","ì•ê¹Œì§€
-        #íŒŒì¼ ì´ë¦„ ì¶œë ¥ìš©
-        path_adress_name = file_path_str.find('.')#íŒŒì¼ì´ë¦„ ìœ„ì¹˜ ê³„ì‚° '.'ì„ ê¸°ì ìœ¼ë¡œ ì•ë¶€ë¶„ë§Œ í•„ìš”í•¨
+        print(file_path_str[1:path_adress])#(Á¦¿Ü Ã³À½ºÎÅÍ ","¾Õ±îÁö
+        #ÆÄÀÏ ÀÌ¸§ Ãâ·Â¿ë
+        path_adress_name = file_path_str.find('.')#ÆÄÀÏÀÌ¸§ À§Ä¡ °è»ê '.'À» ±âÁ¡À¸·Î ¾ÕºÎºĞ¸¸ ÇÊ¿äÇÔ
         print(path_adress_name-1)
-        print(file_path_str[1:path_adress_name])#'('ì œì™¸ ì²˜ìŒë¶€í„° "."ì•ê¹Œì§€
+        print(file_path_str[1:path_adress_name])#'('Á¦¿Ü Ã³À½ºÎÅÍ "."¾Õ±îÁö
         file_name=file_path_str[1:path_adress_name]
-        file_name= os.path.basename(file_name)#ì´ë¦„ ì¶”ì¶œìš©
+        file_name= os.path.basename(file_name)#ÀÌ¸§ ÃßÃâ¿ë
         print(file_name)
 
         sel_img= file_path_str[2:path_adress-1]
         print(file_path_str[1:path_adress])
-        print(sel_img,"\n\n\n")#ê²½ë¡œ ì¬í™•ì¸
+        #sel_img1= sel_img.replace('\\','\\\\')#°æ·Î¿¡ \ ÇÏ³ª°¡ ´õ Ãß°¡µÇ¾ß µÇ¼­ Àú·¸°Ô ¾¸.
+        print(sel_img,"\n\n\n")#°æ·Î ÀçÈ®ÀÎ
+        #im = Image.open(sel_img)#ÀÌ¹ÌÁö ¹ŞÀ½
         
         og_img, re_img, cimg_root, cimg_result = imgproc.ImgProc(sel_img)
         
-        #ì´ì „ ë²„ì „
+        #ÀÌÀü ¹öÀü
         #og_img = cv2.resize(og_img, None, fx  = 0.9, fy = 0.9, interpolation=cv2.INTER_AREA)
         #re_img = cv2.resize(re_img, None, fx = 0.9, fy = 0.9, interpolation=cv2.INTER_AREA)
         
-        #ìµœì‹  ë²„ì „
+        #ÃÖ½Å ¹öÀü
         #og_img = cv2.resize(og_img, (int(width*0.9), int(height*0.9)),interpolation=cv2.INTER_AREA)
         #re_img = cv2.resize(re_img, (int(width*0.7), int(height*0.7)), interpolation=cv2.INTER_AREA)
 
-        #BGR->RGB ë³€í™˜ 
+        #BGR->RGB º¯È¯ 
         b, g, r = cv2.split(og_img)
         og_img = cv2.merge([r,g,b])
 
@@ -286,9 +286,9 @@ class Ui_MainWindow(object):
         print(str(og_width)+", "+str(og_height))
         
 
-        #ê²°ê³¼ í™”ë©´ ì´ë¯¸ì§€ í¬ê¸° ì¡°ì ˆì€ 0.7ì„ ìˆ˜ì •í•´ì£¼ë©´ëœë‹¤
+        #°á°ú È­¸é ÀÌ¹ÌÁö Å©±â Á¶ÀıÀº 0.7À» ¼öÁ¤ÇØÁÖ¸éµÈ´Ù
         if og_width > width or og_height > height:
-            print("ê¸¸ì´ê°€ ë„˜ìŠµë‹ˆë‹¤")
+            print("±æÀÌ°¡ ³Ñ½À´Ï´Ù")
             if (og_width - width) > (og_height - height):
                 ratio = width / og_width
                 og_img = cv2.resize(og_img, (int(width * 0.9), int(og_height * 0.9 * ratio )),interpolation=cv2.INTER_AREA)
@@ -303,11 +303,11 @@ class Ui_MainWindow(object):
 
         
 
-        #ì›ë³¸ ì´ë¯¸ì§€
+        #¿øº» ÀÌ¹ÌÁö
         og_height, og_width, channel = og_img.shape
         og_qimg = QtGui.QImage(og_img.data, og_width, og_height, og_width*3, QtGui.QImage.Format_RGB888 )
 
-        #ì¶œë ¥í•  ì´ë¯¸ì§€
+        #Ãâ·ÂÇÒ ÀÌ¹ÌÁö
         re_height, re_width, channel = re_img.shape
         qimg = QtGui.QImage(re_img.data, re_width, re_height, re_width*3, QtGui.QImage.Format_RGB888 )
        
@@ -316,9 +316,9 @@ class Ui_MainWindow(object):
         
         global control
         
-        ##ë§Œë“¤ì–´ì¤˜ì•¼ë˜ëŠ” ë¶€ë¶„
+        ##¸¸µé¾îÁà¾ßµÇ´Â ºÎºĞ
         if og_width > og_height:
-            #    #ê°€ë¡œê°€ ë” ê¸¸ë•Œ
+            #    #°¡·Î°¡ ´õ ±æ¶§
             control = "w"
             self.label2.setPixmap(QtGui.QPixmap(qimg))
             
@@ -326,8 +326,8 @@ class Ui_MainWindow(object):
         else :
             control = "h"
             self.label1.setPixmap(QtGui.QPixmap(qimg))
-        #    #ì„¸ë¡œê°€ ë” ê¸¸ë•Œ
-        self.run_btn.show()#run_btn ë³´ì´ê¸°
+        #    #¼¼·Î°¡ ´õ ±æ¶§
+        self.run_btn.show()#run_btn º¸ÀÌ±â
         self.label1.hide()
         self.label2.hide()
         self.textBrowser.hide()
@@ -336,22 +336,24 @@ class Ui_MainWindow(object):
         self.textBrowser1.hide()
         self.label.show()
         self.loading_label.hide()
-
-        #return cimg_root, cimg_result
+        
+        
 
                
-    def actionExitClicked(self):#ì¢…ë£Œ
+
+    def actionExitClicked(self):#Á¾·á
         quit()
+    
 
     def loading(self):
         self.loading_label.show()
         movie.start()
-        
+        #self.run_btnClicked()#ÀÌ°Å ¸»°í ½Ã±×³Î ³¡³ª¸é °Å±â¼­ È£Ãâ·Î. ¾È±×·¯¸é ÀÛµ¿ ¾ÈµÊ.
 
-    
-    def run_btnClicked(self):#ë”°ë¡œ í˜¸ì¶œí•´ì£¼ë©´ ë¨
-        #ì½”ë“œëŠ” self.run_btnClicked()#ì´ê±° ë§ê³  ì‹œê·¸ë„ ëë‚˜ë©´ ê±°ê¸°ì„œ í˜¸ì¶œë¡œ. ì•ˆê·¸ëŸ¬ë©´ ì‘ë™ ì•ˆë¨.
-        self.label.hide()#í™”ë©´ ì „í™˜
+    def run_btnClicked(self):
+        #dlg = ResultDialog()
+        #dlg.exec_()
+        self.label.hide()
         movie.stop()
         self.loading_label.hide()
         self.label1.hide()
@@ -361,9 +363,12 @@ class Ui_MainWindow(object):
         self.run_btn.hide()
         self.save_btn.show()
         self.run_btn.hide()
+        #·ÎµùÀÌ¹ÌÁö º¸¿©ÁÖ±â
+        
         
         if control == "h" :
-            self.label1.show()#í™”ë©´ ì „í™˜
+            self.back_label.setPixmap(QtGui.QPixmap("black.png"))
+            self.label1.show()#È­¸é ÀüÈ¯
             self.textBrowser.show()
             i=0
             while i!=10:
@@ -372,7 +377,8 @@ class Ui_MainWindow(object):
                 self.textBrowser.append(count)
                 i=i+1
         else :
-            self.label2.show()#í™”ë©´ ì „í™˜
+            self.back_label.setPixmap(QtGui.QPixmap("mandarin.png"))
+            self.label2.show()#È­¸é ÀüÈ¯
             self.textBrowser1.show()
             i=0
             while i!=10:
@@ -383,14 +389,14 @@ class Ui_MainWindow(object):
 
         
         
-        #append ì‹¤í—˜ìš© ì½”ë“œ
+        #append ½ÇÇè¿ë ÄÚµå
         
         
 
-    def reset_btnClicked(self):#ì´ˆê¸° í™”ë©´ ìƒíƒœë¡œ íšŒê·€
+    def reset_btnClicked(self):#ÃÊ±â È­¸é »óÅÂ·Î È¸±Í
         self.run_btn.hide()
-        self.label.setPixmap(QtGui.QPixmap("background.png"))#ì‹œì‘ì´ë¯¸ì§€
-        self.back_label.setPixmap(QtGui.QPixmap("white.png"))#ì‹œì‘ë°°ê²½
+        self.label.setPixmap(QtGui.QPixmap("background.png"))#½ÃÀÛ ÅØ½ºÆ®
+        self.back_label.setPixmap(QtGui.QPixmap("white.png"))#½ÃÀÛ ÅØ½ºÆ®
         self.label1.hide()
         self.label2.hide()
         self.label.show()
@@ -399,14 +405,15 @@ class Ui_MainWindow(object):
         self.textBrowser.hide()
         self.textBrowser1.clear()
         self.textBrowser1.hide()
-        self.loading_label.hide()#ë¡œë”©ì´ë¯¸ì§€ ê°ì¶”ê¸°
-        movie.stop()#gifë©ˆì¶”ê¸°
+        self.loading_label.hide()#·ÎµùÀÌ¹ÌÁö °¨Ãß±â
+        movie.stop()#gif¸ØÃß±â
+        
 
-    def quit_btnClicked(self):#ì¢…ë£Œ
+    def quit_btnClicked(self):#Á¾·á
         MainWindow.close()
 
     def saveClicked(self):
-        file_dir = QFileDialog.getExistingDirectory(None,'íŒŒì¼ ê²½ë¡œ','c\\')
+        file_dir = QFileDialog.getExistingDirectory(None,'ÆÄÀÏ °æ·Î','c\\')
         print(file_dir)
         Newline = '/'
         file_dir = file_dir+Newline
@@ -414,8 +421,9 @@ class Ui_MainWindow(object):
         save_file_path= file_dir+file_name+".txt"
         print(save_file_path)
         save_file= open(save_file_path,'w')
-        for i in range(1, 11):#ìƒ˜í”Œìš© íŒŒì¼ì…ë ¥
-            data = file_name+ "ì˜ %dë²ˆì§¸ ì¤„ì…ë‹ˆë‹¤.\n" % i
+
+        for i in range(1, 11):#»ùÇÃ¿ë ÆÄÀÏÀÔ·Â
+            data = file_name+ "ÀÇ %d¹øÂ° ÁÙÀÔ´Ï´Ù.\n" % i
             save_file.write(data)
         save_file.close()
         #dlg.find_btnClicked(self,sel_img)
