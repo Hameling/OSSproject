@@ -12,9 +12,10 @@ def OCR(imgfile, lang='eng'):
     print("OCR Result")
     print(text)
 
-os.chdir('C:/Users/user/Documents/OSSproject/SourceCode/Tesseract-OCR')
+os.chdir('../Tesseract-OCR')
 
 
 #OCR('C:/Users/user/Documents/OSSproject/SourceCode/practice/2018-05-21.png')
-OCR('../practice/Justice-League_T.jpg')
+#OCR('../practice/Justice-League_T.jpg')
 
+OCR('../Result/2018-05-21-2.png1.jpg')

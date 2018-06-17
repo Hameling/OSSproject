@@ -17,10 +17,14 @@ from PyQt5.QtGui import *
 import imgproc
 import numpy as np
 import json
+from inceptionv3_run import run_inference_on_image
 from PyQt5.QtGui import QMovie#gif용
-
+from pytesseract import image_to_string
 
 class Ui_MainWindow(object):
+    #global c_root
+    #global c_result
+
 
     def setupUi(self, MainWindow):
         global width
@@ -29,9 +33,8 @@ class Ui_MainWindow(object):
         height= 925
         btn_x = 150
 
-        
 
-        gif = "loading.gif"#로딩이미지 삽입
+        gif = "../icon_image/loading.gif"#로딩이미지 삽입
         global movie#gif용 변수
         movie = QMovie(gif)#변수에 이미지 삽입
         
@@ -51,7 +54,7 @@ class Ui_MainWindow(object):
 
         self.back_label = QtWidgets.QLabel(self.backGrid)#라벨 생성
         self.back_label.setText("")
-        self.back_label.setPixmap(QtGui.QPixmap("ipad_main.png"))#시작 텍스트
+        self.back_label.setPixmap(QtGui.QPixmap("./icon_image/ipad_main.png"))#시작 텍스트
         self.back_label.setObjectName("label")#라벨 이름
         #find_btn 버튼 클릭 이벤트 생성
         self.find_btn = QtWidgets.QPushButton(self.centralwidget)
@@ -59,7 +62,7 @@ class Ui_MainWindow(object):
         self.find_btn.setObjectName("find_btn")
         self.find_btn.clicked.connect(self.find_btnClicked)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("find_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("./icon_image/find_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.find_btn.setIcon(icon)
         self.find_btn.setIconSize(QtCore.QSize(50, 50))
         self.find_btn.setStyleSheet("background-color :#00ff0000")
@@ -70,7 +73,7 @@ class Ui_MainWindow(object):
         self.run_btn.setObjectName("run_btn")
         self.run_btn.clicked.connect(self.loading)
         run_icon = QtGui.QIcon()
-        run_icon.addPixmap(QtGui.QPixmap("run_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        run_icon.addPixmap(QtGui.QPixmap("./icon_image/run_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.run_btn.setIcon(run_icon)
         self.run_btn.setIconSize(QtCore.QSize(50, 50))
         self.run_btn.setStyleSheet("background-color :#00ff0000")
@@ -82,7 +85,7 @@ class Ui_MainWindow(object):
         self.reset_btn.setObjectName("reset_btn")
         self.reset_btn.clicked.connect(self.reset_btnClicked)
         reset_icon = QtGui.QIcon()
-        reset_icon.addPixmap(QtGui.QPixmap("reset_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        reset_icon.addPixmap(QtGui.QPixmap("./icon_image/reset_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.reset_btn.setIcon(reset_icon)
         self.reset_btn.setIconSize(QtCore.QSize(50, 50))
         self.reset_btn.setStyleSheet("background-color :#00ff0000")
@@ -94,7 +97,7 @@ class Ui_MainWindow(object):
         self.quit_btn.setObjectName("quit_btn")
         self.quit_btn.clicked.connect(self.quit_btnClicked)
         quit_icon = QtGui.QIcon()
-        quit_icon.addPixmap(QtGui.QPixmap("quit_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        quit_icon.addPixmap(QtGui.QPixmap("./icon_image/quit_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.quit_btn.setIcon(quit_icon)
         self.quit_btn.setIconSize(QtCore.QSize(50, 50))
         self.quit_btn.setStyleSheet("background-color :#00ff0000")
@@ -105,7 +108,7 @@ class Ui_MainWindow(object):
         self.save_btn.setObjectName("save_btn")
         self.save_btn.clicked.connect(self.saveClicked)
         save_icon = QtGui.QIcon()
-        save_icon.addPixmap(QtGui.QPixmap("save_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        save_icon.addPixmap(QtGui.QPixmap("./icon_image/save_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.save_btn.setIcon(save_icon)
         self.save_btn.setIconSize(QtCore.QSize(50, 50))
         self.save_btn.setStyleSheet("background-color :#00ff0000")
@@ -193,6 +196,12 @@ class Ui_MainWindow(object):
         self.loading_label.setMovie(movie)
 
        
+        self.find_btn.setToolTip('File Find') 
+        self.reset_btn.setToolTip('Reset') 
+        self.save_btn.setToolTip('Save') 
+        self.quit_btn.setToolTip('Exit') 
+        self.run_btn.setToolTip('Run') 
+
 
         self.back_gridLayout.addWidget(self.back_label, 0,0, 0, 0)#그리드 레이아웃 내의위치
         self.gridLayout.addWidget(self.label, 0, 0, 0, 0)#그리드 레이아웃 내의위치
@@ -267,14 +276,14 @@ class Ui_MainWindow(object):
         print(sel_img,"\n\n\n")#경로 재확인
         
         og_img, re_img, cimg_root, cimg_result = imgproc.ImgProc(sel_img)
-        
-        #이전 버전
-        #og_img = cv2.resize(og_img, None, fx  = 0.9, fy = 0.9, interpolation=cv2.INTER_AREA)
-        #re_img = cv2.resize(re_img, None, fx = 0.9, fy = 0.9, interpolation=cv2.INTER_AREA)
-        
-        #최신 버전
-        #og_img = cv2.resize(og_img, (int(width*0.9), int(height*0.9)),interpolation=cv2.INTER_AREA)
-        #re_img = cv2.resize(re_img, (int(width*0.7), int(height*0.7)), interpolation=cv2.INTER_AREA)
+        global c_root
+        global c_result
+        global c_img
+        c_img = og_img
+        c_root = cimg_root
+        c_result = cimg_result
+
+        print(c_root[0])
 
         #BGR->RGB 변환 
         b, g, r = cv2.split(og_img)
@@ -289,21 +298,32 @@ class Ui_MainWindow(object):
         
 
         #결과 화면 이미지 크기 조절은 0.7을 수정해주면된다
-        if og_width > width or og_height > height:
+        if og_width > (width-325) or og_height > (height-240):
             print("길이가 넘습니다")
-            if (og_width - width) > (og_height - height):
-                ratio = width / og_width
-                og_img = cv2.resize(og_img, (int(width * 0.9), int(og_height * 0.9 * ratio )),interpolation=cv2.INTER_AREA)
-                re_img = cv2.resize(re_img, (int(width * 0.7), int(og_height * 0.7 * ratio )),interpolation=cv2.INTER_AREA)
+            if (og_width - (width-325)) > (og_height - (height-240)):
+                ratio = (width-325) / og_width
+                #og_img = cv2.resize(og_img, (int(width * 0.95), int(og_height * 0.95 * ratio )),interpolation=cv2.INTER_AREA)
+                og_img = cv2.resize(og_img, (int((width-325) * 0.95), int(og_height * ratio * 0.95)),interpolation=cv2.INTER_AREA)
+                re_img = cv2.resize(re_img, (int((width-315) * 0.95), int(og_height * ratio * 0.95)),interpolation=cv2.INTER_AREA)
             else:
-                ratio = height / og_height
-                og_img = cv2.resize(og_img, (int(og_width * 0.9 * ratio), int(height * 0.9)),interpolation=cv2.INTER_AREA)
-                re_img = cv2.resize(re_img, (int(og_width * 0.7 * ratio), int(height * 0.7)),interpolation=cv2.INTER_AREA)
+                ratio = (height-240) / og_height
+                og_img = cv2.resize(og_img, (int(og_width * ratio * 0.95), int((height-240) * 0.95)),interpolation=cv2.INTER_AREA)
+                re_img = cv2.resize(re_img, (int(og_width * ratio * 0.95), int((height-250) * 0.95)),interpolation=cv2.INTER_AREA)
         else:
-            og_img = cv2.resize(og_img, (int(og_width*0.9), int(og_height*0.9)),interpolation=cv2.INTER_AREA)
-            re_img = cv2.resize(re_img, (int(og_width*0.7), int(og_height*0.7)), interpolation=cv2.INTER_AREA)
-
+            if (width-325) > (height-240):
+                ratio =  (width-325) / og_width
+                og_img = cv2.resize(og_img, (int((width-325) * 0.95), int(og_height * ratio * 0.95)),interpolation=cv2.INTER_AREA)
+                re_img = cv2.resize(re_img, (int((width-315) * 0.95), int(og_height * ratio * 0.95)),interpolation=cv2.INTER_AREA)
+            else:
+                ratio = (height-240) / og_height
+                r_ratio = (height-240) / og_height
+                og_img = cv2.resize(og_img, (int(og_width * ratio * 0.95), int((height-240) * 0.95)),interpolation=cv2.INTER_AREA)
+                re_img = cv2.resize(re_img, (int(og_width * ratio * 0.95), int((height-250) * 0.95)),interpolation=cv2.INTER_AREA)
         
+      
+        og_height, og_width, channel = og_img.shape
+       
+        print(str(og_width)+", "+str(og_height))
 
         #원본 이미지
         og_height, og_width, channel = og_img.shape
@@ -313,7 +333,7 @@ class Ui_MainWindow(object):
         re_height, re_width, channel = re_img.shape
         qimg = QtGui.QImage(re_img.data, re_width, re_height, re_width*3, QtGui.QImage.Format_RGB888 )
        
-        self.back_label.setPixmap(QtGui.QPixmap("ipad_main.png"))#시작 텍스트
+        self.back_label.setPixmap(QtGui.QPixmap("./icon_image/ipad_main.png"))#시작 텍스트
         self.label.setPixmap(QtGui.QPixmap(og_qimg))
         
         global control
@@ -365,26 +385,49 @@ class Ui_MainWindow(object):
         self.save_btn.show()
         self.run_btn.hide()
         
+        text = []
+       
+        #for i in range(len(c_root)):
+        #    if "positive" == run_inference_on_image(c_root[i]+".jpg"):
+        #        cv2.imwrite('Result/' + c_root[i][12:] +'.jpg',c_result[i])
+        #        print('this is text')
+                #path = os.getcwd()
+                #os.chdir('C:/Users/user/Documents/OSSproject/SourceCode/Tesseract-OCR')
+                #txt = image_to_string(c_result[i])
+                #print(txt)
+                #text.append(txt)
+                #os.chdir(path)
+
+        path = os.getcwd()
+        os.chdir('C:/Users/user/Documents/OSSproject/SourceCode/Tesseract-OCR')
+        txt = image_to_string(c_img)
+        print(txt)
+        text.append(txt)
+        os.chdir(path)
+
         if control == "h" :
-            self.back_label.setPixmap(QtGui.QPixmap("ipad_height.png"))#q배경화면 변경
+            self.back_label.setPixmap(QtGui.QPixmap("./icon_image/ipad_height.png"))#q배경화면 변경
             self.label1.show()#화면 전환
             self.textBrowser.show()
-            i=0
-            while i!=10:
-                self.textBrowser.append("\tHello Pyqt5\b")
-                count = str(i)
-                self.textBrowser.append(count)
-                i=i+1
+            
+            if len(text) != 0:
+                for i in range(len(text)):
+                    count = str(i + 1) + ")"
+                    self.textBrowser.append(count + text[i])
+            else:
+                self.textBrowser.append("\tNot Found Text\b")
         else :
-            self.back_label.setPixmap(QtGui.QPixmap("ipad_width.png"))#q배경화면 변경
+            self.back_label.setPixmap(QtGui.QPixmap("./icon_image/ipad_width.png"))#q배경화면 변경
             self.label2.show()#화면 전환
             self.textBrowser1.show()
-            i=0
-            while i!=10:
-                self.textBrowser1.append("\tHello Pyqt5\b")
-                count = str(i)
-                self.textBrowser1.append(count)
-                i=i+1
+
+            if len(text) != 0:
+                for i in range(len(text)):
+                    count = str(i + 1) + ")"
+                    self.textBrowser1.append(count + text[i])
+                    
+            else:
+                self.textBrowser1.append("\tNot Found Text\b")
 
         
         
@@ -395,7 +438,7 @@ class Ui_MainWindow(object):
     def reset_btnClicked(self):#초기 화면 상태로 회귀
         self.run_btn.hide()
         self.label.setPixmap(QtGui.QPixmap(""))#시작이미지
-        self.back_label.setPixmap(QtGui.QPixmap("ipad_main.png"))#시작배경
+        self.back_label.setPixmap(QtGui.QPixmap("./icon_image/ipad_main.png"))#시작배경
         self.label1.hide()
         self.label2.hide()
         self.label.show()
