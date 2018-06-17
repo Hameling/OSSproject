@@ -13,9 +13,7 @@ def BoxWarp(img, box):
     rect[1] = box[np.argmin(diff)]
     rect[3] = box[np.argmax(diff)]
 
-    #print(rect)
     (tl, tr, br, bl) = rect
-    #(bl,tl,tr,br) = box
 
     widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
     widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))

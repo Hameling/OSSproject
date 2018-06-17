@@ -22,8 +22,6 @@ from PyQt5.QtGui import QMovie#gif용
 from pytesseract import image_to_string
 
 class Ui_MainWindow(object):
-    #global c_root
-    #global c_result
 
 
     def setupUi(self, MainWindow):
@@ -33,8 +31,9 @@ class Ui_MainWindow(object):
         height= 925
         btn_x = 150
 
+        
 
-        gif = "../icon_image/loading.gif"#로딩이미지 삽입
+        gif = "./icon_image/loading.gif"#로딩이미지 삽입
         global movie#gif용 변수
         movie = QMovie(gif)#변수에 이미지 삽입
         
@@ -367,16 +366,15 @@ class Ui_MainWindow(object):
         quit()
 
     def loading(self):
-        #self.loading_label.show()#로딩 부를때는 이부분을 활성화 시킬것
-        #movie.start()
+        self.loading_label.show()#로딩 부를때는 이부분을 활성화 시킬것
+        movie.start()
         self.run_btnClicked()#테스트 한다고 살려놓음. 로딩 부를때는 이쪽을 주석처리하거나 제거
 
     
     def run_btnClicked(self):#따로 호출해주면 됨
         #코드는 self.run_btnClicked()#이거 말고 시그널 끝나면 거기서 호출로. 안그러면 작동 안됨.
         self.label.hide()#화면 전환
-        movie.stop()
-        self.loading_label.hide()
+        
         self.label1.hide()
         self.label2.hide()
         self.textBrowser.hide()
@@ -384,7 +382,7 @@ class Ui_MainWindow(object):
         self.run_btn.hide()
         self.save_btn.show()
         self.run_btn.hide()
-        
+        global text
         text = []
        
         #for i in range(len(c_root)):
@@ -404,6 +402,9 @@ class Ui_MainWindow(object):
         print(txt)
         text.append(txt)
         os.chdir(path)
+
+        movie.stop()
+        self.loading_label.hide()
 
         if control == "h" :
             self.back_label.setPixmap(QtGui.QPixmap("./icon_image/ipad_height.png"))#q배경화면 변경
@@ -462,9 +463,13 @@ class Ui_MainWindow(object):
         save_file_path= file_dir+file_name+".txt"
         print(save_file_path)
         save_file= open(save_file_path,'w')
-        for i in range(1, 11):#샘플용 파일입력
-            data = file_name+ "의 %d번째 줄입니다.\n" % i
-            save_file.write(data)
+        #for i in range(1, 11):#샘플용 파일입력
+        #    data = file_name+ "의 %d번째 줄입니다.\n" % i
+        #    save_file.write(data)
+        for i in range(len(text)):
+            count = str(i + 1) + ")"
+            save_file.write(count + text[i])
+
         save_file.close()
         #dlg.find_btnClicked(self,sel_img)
         #id = dlg.id

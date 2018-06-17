@@ -18,4 +18,4 @@ os.chdir('../Tesseract-OCR')
 #OCR('C:/Users/user/Documents/OSSproject/SourceCode/practice/2018-05-21.png')
 #OCR('../practice/Justice-League_T.jpg')
 
-OCR('../Result/2018-05-21-2.png1.jpg')
+OCR('../practice/index.png')

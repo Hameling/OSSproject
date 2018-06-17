@@ -34,9 +34,6 @@ def ImgProc(file_name):
     #Image Kernel 정의
     mp_kernel = np.ones((2,2),np.uint8)
     
-    
-    #cv2.imshow("gray_image",imgray)
-    
     thresh = cv2.adaptiveThreshold(imgray,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
                 cv2.THRESH_BINARY,7,2)
     thresh = ~thresh
@@ -47,9 +44,6 @@ def ImgProc(file_name):
     
     tmp_img= cv2.morphologyEx(tmp_img, cv2.MORPH_GRADIENT,mp_kernel)
     
-    #cv2.imshow("mp",mp)
-    
-    
     minLineLength = 100
     maxLineGap = 5
     
@@ -57,7 +51,6 @@ def ImgProc(file_name):
     
     for i in range(len(lines)):
         for x1,y1,x2,y2 in lines[i]:
-            #print(x1,y1,x2,y2)
             if abs(y2-y1) > (height/20):
                 cv2.line(mp,(x1,y1),(x2,y2),(0,0,255),10)
     
@@ -81,26 +74,10 @@ def ImgProc(file_name):
         box = np.int0(box)
         wp_img,dst = BoxWarp(tmp_img,box)
         if dst[1][0] > int(width/30) or dst[3][1] > int(height/30):
-        #if dst[1][0] > 30 and dst[3][1] > 10:
-        #if w > 10 or h > 10:
-            #rect = cv2.minAreaRect(cnt)
-            #box = cv2.boxPoints(rect)
-            #box = np.int0(box)
-            #print(box)
             img = cv2.drawContours(img, [box], -1,(b,g,r), 2) 
-            #img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
-            #wp_img = BoxWarp(tmp_img,box)
             cimg_result.append(wp_img)
             contoured_img = 'Contour_img/' + file_name + str(i)
             cimg_root.append(contoured_img)
-            #print(contoured_img)
             cv2.imwrite(contoured_img+'.jpg',wp_img)
  
-
-    #cv2.imshow('thresh',thresh)
-    #cv2.imshow('temp image',tmp_img)
-    #cv2.imshow('image',img)
-    #cv2.waitKey(0)
-    #cv2.destroyAllWindows()
-
     return og_img, img, cimg_root, cimg_result
